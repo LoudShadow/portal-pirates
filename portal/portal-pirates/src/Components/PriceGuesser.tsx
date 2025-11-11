@@ -11,6 +11,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useHint from "../hook/useHint";
 
 interface Transaction {
     merchant: string;
@@ -65,9 +66,15 @@ export const PriceGuesser = ({ transactions,onFinishGame }: PriceGuesserProps) =
                         const actual = tx.price;
                         const time = DateTime.fromISO(tx.time).toFormat("HH:mm");
 
+                        const [ showHint, setShowHint ] = useState(false);
+
                         let resultIcon = null;
                         let resultColor = undefined;
                         let resultText = null;
+
+                        const hint = useHint(tx.merchant, actual.toString(), tx.time);
+
+                        console.log(hint)
 
                         if (guessed) {
                             const diff = Math.abs(actual - (guess ?? 0));
@@ -186,11 +193,19 @@ export const PriceGuesser = ({ transactions,onFinishGame }: PriceGuesserProps) =
                                                                 variant="outlined"
                                                                 color="primary"
                                                                 fullWidth
-                                                                disabled
+                                                                disabled={showHint || hint?.loading || !!hint?.error} 
+                                                                onClick={() => setShowHint(true)}  
                                                             >
                                                                 Hint
                                                             </Button>
                                                         </Grid>
+                                                        {showHint && hint && hint.value && (
+                                                            <Box mt={2} p={2} bgcolor="grey.100" borderRadius={2}>
+                                                                <Typography variant="body2" color="text.secondary">
+                                                                    {hint.value}
+                                                                </Typography>
+                                                            </Box>
+                                                        )}
                                                     </Grid>
                                                 </Stack>
                                             </AccordionDetails>
