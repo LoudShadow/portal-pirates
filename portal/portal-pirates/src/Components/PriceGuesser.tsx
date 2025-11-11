@@ -12,6 +12,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useHint from "../hook/useHint";
+import { HelpModal } from "./HelpModal";
 
 interface Transaction {
     merchant: string;
@@ -31,6 +32,7 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
     const [guesses, setGuesses] = useState<(number | null)[]>(Array(transactions.length).fill(null));
     const [inputs, setInputs] = useState<string[]>(Array(transactions.length).fill(""));
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const [helpModalOpen, setHelpModalOpen] = useState(true);
 
     useEffect(() => {
         setExpanded(0); // Open the first accordion on mount
@@ -75,7 +77,8 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
     };
 
     return (
-        <Box padding={3} mt={5} sx={{ bgcolor: 'background.default', borderRadius: 4, maxWidth: 500, margin: 'auto' }}>
+        <Box padding={3} mt={5} sx={{ bgcolor: 'background.default', borderRadius: 4, maxWidth: 500, margin: 'auto', position: 'relative' }}>
+            <HelpModal open={helpModalOpen} onClose={() => setHelpModalOpen(false)} />
             <Stack gap={2}>
                 <Typography variant="h4" align="center" color="primary" sx={{ fontWeight: 'bold' }}>
                     Guess Your Spend
@@ -149,7 +152,7 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
                                     {idx < transactions.length - 1 && <TimelineConnector sx={{ bgcolor: 'grey.400' }} />}
                                 </TimelineSeparator>
                                 <TimelineContent sx={{ pb: 3 }}>
-                                    <Box>
+                                    <Box width='300px'>
                                         <Typography fontFamily="monospace" color="text.secondary" gutterBottom>
                                             {time} {guessed && `- ${tx.merchant}`}
                                         </Typography>
