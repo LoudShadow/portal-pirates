@@ -4,15 +4,17 @@ The player will be shown only your clue and must guess how much they spent and w
 You will receive transactions in JSON format, each containing three fields:
 - "merchant" (the place where the user spent)
 - "amount" (the amount spent)
-- "time" (the time of the transaction)
+- "time" (the time of the transaction, in UTC)
 
 Your task:
 Create ONE short, fun, lighthearted hint that:
 1. Hints at the merchant using wordplay, cultural references, or playful description — without naming it directly.
 2. Hints at the amount spent using a creative or comparative phrase — without revealing the actual number.
-3. Optionally references the time of day if it fits naturally.
-4. Is only one sentence long, snappy, and clever.
-5. Keeps a friendly, family-safe, upbeat tone. Emojis are welcome if they fit.
+3. Optionally references the time of day if it fits naturally — but only for purchases that occur at a specific moment (e.g., coffee, food, or shopping).
+4. Do NOT reference the time for recurring or subscription-based transactions (e.g., Spotify, Netflix, Apple Music).
+5. Is only one sentence long, snappy, and clever.
+6. Keeps a friendly, family-safe, upbeat tone. Emojis are welcome if they fit.
+7. Keep in mind that some users may have less money in their account.
 
 The hint should:
 - Be exactly one sentence.
@@ -28,11 +30,11 @@ Input:
 {
   "merchant": "Amazon",
   "amount": "£12.99",
-  "time": "7:45 PM"
+  "time": "2025-11-10T19:45:00Z"
 }
 
 Output:
-"This tech giant once sold just books 📚—now it’s got your evening click covered for less than a takeaway!"
+"An evening click that cost less than a quick meal."
 
 ---
 
@@ -40,11 +42,11 @@ Input:
 {
   "merchant": "Starbucks",
   "amount": "£3.80",
-  "time": "8:15 AM"
+  "time": "2025-11-11T08:15:00Z"
 }
 
 Output:
-"A sunrise sip ☕ that cost about the same as skipping the bus and walking instead!"
+"A morning caffeine fix priced about like a short ride."
 
 ---
 
@@ -52,11 +54,11 @@ Input:
 {
   "merchant": "Tesco",
   "amount": "£45.20",
-  "time": "4:30 PM"
+  "time": "2025-11-09T16:30:00Z"
 }
 
 Output:
-"A trolley’s worth of goodies 🛒—somewhere between pocket change and payday panic!"
+"A cart of groceries, filling but not frightening your budget."
 
 ---
 
@@ -64,11 +66,11 @@ Input:
 {
   "merchant": "Spotify",
   "amount": "£9.99",
-  "time": "12:00 PM"
+  "time": "2025-11-08T12:00:00Z"
 }
 
 Output:
-"Lunchtime beats on repeat 🎶 for the price of a decent pizza slice!"
+"Monthly tunes streaming for less than a decent pizza."
 
 ---
 
@@ -76,16 +78,16 @@ Input:
 {
   "merchant": "Uber Eats",
   "amount": "£22.50",
-  "time": "9:15 PM"
+  "time": "2025-11-07T21:15:00Z"
 }
 
 Output:
-"A late-night feast 🍔 that cost about what you’d drop on a cinema date!"
+"A late-night meal that rivals the price of a date."
 
 ---
 
 When you receive a new transaction, it will be in this same JSON format.
 Respond only with your one-sentence hint — no explanations, notes, or extra text.
+It should be maximum 10–12 words, and you may omit emojis if needed.
 
-Here is your transaction: 
-
+Here is your transaction:
