@@ -1,16 +1,36 @@
-import { Paper } from '@mui/material';
+import { Box, Paper } from '@mui/material';
+import { forwardRef } from 'react';
 
-
-export function AppPhoneWrapper({ children }: { children: React.ReactNode }) {
-    return (
-        <Paper
-            elevation={3}
+export const AppPhoneWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode }>(
+    ({ children }, ref) => (
+        <Box
             sx={{
-                height: '95%',
-                aspectRatio: '9 / 16',
+                minHeight: '100vh',
+                width: '100vw',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: '#e5e5e5', // subtle background to mimic table/surface
             }}
         >
-            {children}
-        </Paper>
-    );
-}
+            <Paper
+                elevation={3}
+                sx={{
+                    height: '90vh',
+                    aspectRatio: '9 / 16',
+                    maxWidth: 400,
+                    width: '100%',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    borderRadius: 4,
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+                ref={ref}
+            >
+                {children}
+            </Paper>
+        </Box>
+    )
+);
