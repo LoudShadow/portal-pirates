@@ -5,7 +5,7 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { DateTime } from "luxon";
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
@@ -30,6 +30,19 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
     const [expanded, setExpanded] = useState<number | null>(null);
     const [guesses, setGuesses] = useState<(number | null)[]>(Array(transactions.length).fill(null));
     const [inputs, setInputs] = useState<string[]>(Array(transactions.length).fill(""));
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+    useEffect(() => {
+        setExpanded(0); // Open the first accordion on mount
+    }, []);
+
+    useEffect(() => {
+        if (expanded !== null) {
+            setTimeout(() => {
+                inputRefs.current[expanded]?.focus();
+            }, 300);
+        }
+    }, [expanded]);
 
     const handleAccordion = (idx: number) => {
         if (guesses[idx] !== null) return; // Don't expand if already guessed
@@ -40,11 +53,25 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
         setInputs(inputs.map((v, i) => (i === idx ? value : v)));
     };
 
+    const handleKeyDown = (event: React.KeyboardEvent, idx: number) => {
+        if (event.key === 'Enter' && inputs[idx]) {
+            handleGuess(idx);
+        }
+    };
+
     const handleGuess = (idx: number) => {
         const val = parseFloat(inputs[idx]);
         if (isNaN(val)) return;
-        setGuesses(guesses.map((g, i) => (i === idx ? val : g)));
-        setExpanded(null);
+        const newGuesses = guesses.map((g, i) => (i === idx ? val : g));
+        setGuesses(newGuesses);
+
+        const nextUnguessedIndex = newGuesses.findIndex(g => g === null);
+
+        if (nextUnguessedIndex !== -1) {
+            setExpanded(nextUnguessedIndex);
+        } else {
+            setExpanded(null);
+        }
     };
 
     return (
@@ -52,6 +79,9 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
             <Stack gap={2}>
                 <Typography variant="h4" align="center" color="primary" sx={{ fontWeight: 'bold' }}>
                     Guess Your Spend
+                </Typography>
+                <Typography variant="subtitle1" align="center" color="text.secondary">
+                    {DateTime.now().toFormat("cccc, MMMM d, yyyy")}
                 </Typography>
                 <Timeline
                     sx={{
@@ -78,6 +108,7 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
 
                         if (guessed) {
                             const diff = Math.abs(actual - (guess ?? 0));
+                            const percentageDifference = Math.round((diff / actual) * 100);
 
                             if (diff < 0.01) {
                                 resultColor = "success.main";
@@ -103,7 +134,7 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
                                     variant="caption"
                                     sx={{ color: resultColor, ml: 0.5, fontWeight: 600 }}
                                 >
-                                    {actual.toLocaleString("en-GB", { style: "currency", currency: "GBP" })}
+                                    {`${actual.toLocaleString("en-GB", { style: "currency", currency: "GBP" })} (${percentageDifference}%)`}
                                 </Typography>
                             );
                         }
@@ -120,7 +151,7 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
                                 <TimelineContent sx={{ pb: 3 }}>
                                     <Box>
                                         <Typography fontFamily="monospace" color="text.secondary" gutterBottom>
-                                            {time}
+                                            {time} {guessed && `- ${tx.merchant}`}
                                         </Typography>
                                         <Accordion
                                             expanded={expanded === idx}
@@ -172,9 +203,11 @@ export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPla
                                                         label="Your guess (£)"
                                                         value={inputs[idx]}
                                                         onChange={e => handleInput(idx, e.target.value)}
+                                                        onKeyDown={e => handleKeyDown(e, idx)}
                                                         fullWidth
                                                         inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                                                         disabled={guessed}
+                                                        inputRef={el => (inputRefs.current[idx] = el)}
                                                     />
                                                     <Grid container spacing={1}>
                                                         <Grid size={6}>

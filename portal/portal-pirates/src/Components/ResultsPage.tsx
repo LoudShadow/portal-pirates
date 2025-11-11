@@ -1,6 +1,6 @@
-import { Box, IconButton, Stack, Typography, useTheme, Button } from "@mui/material";
+import { Box, Stack, Typography, useTheme, Button } from "@mui/material";
 import { motion } from "framer-motion";
-import { AccessTime, ArrowBack, StackedLineChart, Storefront, TrackChanges } from "@mui/icons-material";
+import { AccessTime, StackedLineChart, Storefront, TrackChanges } from "@mui/icons-material";
 import { AnimatedCounter } from "./AnimatedCounter";
 import imgUrl from '../assets/cancara.png'
 
