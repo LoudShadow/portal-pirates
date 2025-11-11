@@ -41,7 +41,7 @@ export function SubCard(props: {
     );
 }
 
-export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateToTransfer: () => void, playtime: string, bonusPoints: number, usersPoints: number, setUsersPoints: (points: number) => void, onNavigateToInsightPlay: () => void, gameResultScore: number }) {
+export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateToTransfer: () => void, playtime: string, bonusPoints: number, usersPoints: number, setUsersPoints: (points: number) => void, onNavigateToInsightPlay: () => void, gameResultScore: number, hintCount: number }) {
     const theme = useTheme();
     return <Stack alignItems={'center'} spacing={2} paddingTop={2}>
         <Stack alignItems={'center'} spacing={2}>
@@ -75,7 +75,7 @@ export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateTo
             />
             <SubCard
                 title="Hints Used"
-                content="1"
+                content={props.hintCount.toString()}
                 icon={<></>}
                 index={2}
             />
