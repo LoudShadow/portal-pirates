@@ -31,6 +31,12 @@ const lloydsPalette = {
   info: {
     main: '#007A33', // Lloyds teal
   },
+  additional: {
+    brand6: '#a19fff',
+    brand7: '#f5b2f2',
+    brand8: '#9de7de',
+    brand9: '#db954e'
+  },
 };
 
 

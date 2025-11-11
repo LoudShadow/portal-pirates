@@ -21,12 +21,13 @@ export const AppPhoneWrapper = forwardRef<HTMLDivElement, { children: React.Reac
                     maxWidth: 400,
                     width: '100%',
                     position: 'relative',
-                    overflow: 'hidden',
+                    overflow: 'scroll',
                     borderRadius: 4,
                     boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
                     display: 'flex',
                     flexDirection: 'column',
                     bgcolor: '#F5F6F7'
+                    scrollbarWidth: 'none',
                 }}
                 ref={ref}
             >

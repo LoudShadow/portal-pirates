@@ -4,6 +4,8 @@ import { AppPhoneWrapper } from './Components/AppWrapper/AppWrapper'
 import { PriceGuesser } from './Components/PriceGuesser'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { theme } from './theme'
+import { ResultsPage } from './Components/ResultsPage'
+import { PageController } from './Components/PageController'
 
 const transactions = [
   {
