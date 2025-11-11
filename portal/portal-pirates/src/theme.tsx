@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const lloydsPalette = {
   primary: {
     main: '#005A42', // Lloyds green
+    light: '#09d19cff',
     contrastText: '#fff',
   },
   secondary: {
@@ -15,6 +16,7 @@ const lloydsPalette = {
   },
   text: {
     primary: '#1A1A1A', // Lloyds dark text
+    mainContrast: '#a3a3a3ff',
     secondary: '#005A42', // Lloyds green for accents
   },
   success: {
@@ -28,6 +30,12 @@ const lloydsPalette = {
   },
   info: {
     main: '#007A33', // Lloyds teal
+  },
+  additional: {
+    brand6: '#a19fff',
+    brand7: '#f5b2f2',
+    brand8: '#9de7de',
+    brand9: '#db954e'
   },
 };
 
