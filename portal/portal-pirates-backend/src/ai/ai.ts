@@ -1,4 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
+import { readTextFile } from '../utils';
 
 const GOOGLE_CLOUD_PROJECT = process.env.GOOGLE_CLOUD_PROJECT;
 const GOOGLE_CLOUD_LOCATION = process.env.GOOGLE_CLOUD_LOCATION || 'global';
@@ -30,11 +31,12 @@ type TransactionData = {
 };
 
 const generatePrompt = (data: TransactionData) => {
-  const {cost, time, vendor} = data;
-  return `Provide a hint to save money based on the following transaction details:
-  Cost: ${cost}
-  Time: ${time}
-  Vendor: ${vendor}`
+  // const {cost, time, vendor} = data;
+  // return `Provide a hint to save money based on the following transaction details:
+  // Cost: ${cost}
+  // Time: ${time}
+  // Vendor: ${vendor}`
+  return JSON.stringify(data);
 };
 
 export async function generateHint(
@@ -48,11 +50,15 @@ export async function generateHint(
     location: location,
   });
 
+  const basePrompt = await readTextFile('../../prompts/hint_prompt.txt');
+
   const content = generatePrompt(transactionData);
+
+  const fullPrompt = `${basePrompt}\n\nTransaction Data:\n${content}`;
 
   const response = await client.models.generateContent({
     model: 'gemini-2.5-flash',
-    contents: content,
+    contents: fullPrompt,
   });
 
   console.log(response.text);
