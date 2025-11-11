@@ -14,7 +14,7 @@ const challenges = [
     { title: "Use Spending Insights", description: "Engage with our spending insights tool to earn bonus points.", icon: <EmojiEvents/> },
 ];
 
-export function InsightPlayPage(props: { onNavigateBack: () => void }) {
+export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void }) {
     const theme = useTheme();
 
     return (
@@ -49,7 +49,10 @@ export function InsightPlayPage(props: { onNavigateBack: () => void }) {
                                 backgroundColor: ((theme.palette as any).additional as any)[`brand${6 + index}`],
                                 color: theme.palette.getContrastText(((theme.palette as any).additional as any)[`brand${6 + index}`])
                             }}>
-                                <CardActionArea sx={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
+                                <CardActionArea 
+                                    sx={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}
+                                    onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : undefined}
+                                >
                                     <CardContent>
                                         <Typography variant="subtitle1" component="div" fontWeight="bold">
                                             {game.title}

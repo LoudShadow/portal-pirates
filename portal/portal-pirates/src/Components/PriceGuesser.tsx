@@ -19,10 +19,11 @@ interface Transaction {
 }
 
 interface PriceGuesserProps {
-    transactions: Transaction[]
+    transactions: Transaction[];
+    onFinishGame: (results: { guessedPrice: number; actualPrice: number }[]) => void;
 }
 
-export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
+export const PriceGuesser = ({ transactions,onFinishGame }: PriceGuesserProps) => {
     const [expanded, setExpanded] = useState<number | null>(null);
     const [guesses, setGuesses] = useState<(number | null)[]>(Array(transactions.length).fill(null));
     const [inputs, setInputs] = useState<string[]>(Array(transactions.length).fill(""));
@@ -200,6 +201,19 @@ export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
                         );
                     })}
                 </Timeline>
+                {guesses.every(guess => guess !== null) && (
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => onFinishGame(transactions.map((tx, idx) => ({
+                            guessedPrice: guesses[idx]!,
+                            actualPrice: tx.price,
+                        })))}
+                        sx={{ mt: 3, py: 1.5, fontSize: '1.1rem' }}
+                    >
+                        Finish Game
+                    </Button>
+                )}
             </Stack>
         </Box>
     )
