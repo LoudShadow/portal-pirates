@@ -26,7 +26,7 @@ const lloydsPalette = {
     main: '#E4002B', // Lloyds red
   },
   warning: {
-    main: '#FFB81C', // Lloyds yellow
+    main: '#d59f2bff', // Lloyds yellow
   },
   info: {
     main: '#007A33', // Lloyds teal
@@ -38,6 +38,7 @@ const lloydsPalette = {
     brand9: '#db954e'
   },
 };
+
 
 const lloydsFontFamily = [
   '"GT-Ultra"',

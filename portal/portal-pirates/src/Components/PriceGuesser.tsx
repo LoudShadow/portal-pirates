@@ -1,5 +1,16 @@
-import { Box, Button, Drawer, List, ListItem, ListItemButton, ListItemText, Stack, TextField, Typography } from "@mui/material";
-import { useState, type RefObject } from "react";
+import { Accordion, Box, AccordionSummary, Chip, Stack, TextField, Typography, AccordionDetails, Button, Grid } from "@mui/material";
+import Timeline from '@mui/lab/Timeline';
+import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
+import TimelineSeparator from '@mui/lab/TimelineSeparator';
+import TimelineConnector from '@mui/lab/TimelineConnector';
+import TimelineContent from '@mui/lab/TimelineContent';
+import TimelineDot from '@mui/lab/TimelineDot';
+import { useState } from "react";
+import { DateTime } from "luxon";
+import CheckIcon from '@mui/icons-material/Check';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface Transaction {
     merchant: string;
@@ -9,208 +20,187 @@ interface Transaction {
 
 interface PriceGuesserProps {
     transactions: Transaction[]
-    container?: RefObject<HTMLDivElement | null>;
 }
 
-export const PriceGuesser = ({ transactions, container }: PriceGuesserProps) => {
-    const [openIdx, setOpenIdx] = useState<number | null>(null);
+export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
+    const [expanded, setExpanded] = useState<number | null>(null);
     const [guesses, setGuesses] = useState<(number | null)[]>(Array(transactions.length).fill(null));
-    const [input, setInput] = useState<string>("");
+    const [inputs, setInputs] = useState<string[]>(Array(transactions.length).fill(""));
 
-    const handleOpen = (idx: number) => {
-        // Only allow opening if not already guessed
-        if (guesses[idx] !== null) return;
-        setOpenIdx(idx);
-        setInput("");
+    const handleAccordion = (idx: number) => {
+        if (guesses[idx] !== null) return; // Don't expand if already guessed
+        setExpanded(expanded === idx ? null : idx);
     };
 
-    const handleClose = () => {
-        setOpenIdx(null);
-        setInput("");
+    const handleInput = (idx: number, value: string) => {
+        setInputs(inputs.map((v, i) => (i === idx ? value : v)));
     };
 
-    const handleGuess = () => {
-        if (openIdx === null) return;
-        const updated = [...guesses];
-        updated[openIdx] = Number(input);
-        setGuesses(updated);
-        handleClose();
+    const handleGuess = (idx: number) => {
+        const val = parseFloat(inputs[idx]);
+        if (isNaN(val)) return;
+        setGuesses(guesses.map((g, i) => (i === idx ? val : g)));
+        setExpanded(null);
     };
 
     return (
-        <Box sx={{ maxWidth: 400, mx: "auto", mt: 2, p: 1 }}>
-            <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
-                Guess the amount spent for each transaction
-            </Typography>
-            <List>
-                {transactions.map((tx, idx) => (
-                    <ListItem key={idx} disablePadding>
-                        <ListItemButton
-                            onClick={() => handleOpen(idx)}
-                            disabled={guesses[idx] !== null}
-                        >
-                            <ListItemText
-                                primary={
-                                    guesses[idx] !== null
-                                        ? (
-                                            <span style={{ color: "#222", fontWeight: 500 }}>
-                                                <strong>{tx.time}</strong> at <strong>{tx.merchant}</strong>
-                                            </span>
-                                        )
-                                        : `Time: ${tx.time}`
+        <Box padding={3} mt={5} sx={{ bgcolor: 'background.default', borderRadius: 4, maxWidth: 500, margin: 'auto' }}>
+            <Stack gap={2}>
+                <Typography variant="h4" align="center" color="primary" sx={{ fontWeight: 'bold' }}>
+                    Guess Your Spend
+                </Typography>
+                <Timeline
+                    sx={{
+                        [`& .${timelineItemClasses.root}:before`]: {
+                            flex: 0,
+                            padding: 0,
+                        },
+                        p: 0
+                    }}
+                >
+                    {transactions.map((tx, idx) => {
+                        const guessed = guesses[idx] !== null;
+                        const guess = guesses[idx];
+                        const actual = tx.price;
+                        const time = DateTime.fromISO(tx.time).toFormat("HH:mm");
+
+                        let resultIcon = null;
+                        let resultColor = undefined;
+                        let resultText = null;
+
+                        if (guessed) {
+                            const diff = Math.abs(actual - (guess ?? 0));
+
+                            if (diff < 0.01) {
+                                resultColor = "success.main";
+                                resultIcon = <CheckIcon sx={{ color: resultColor }} fontSize="small" />;
+                            } else {
+                                // Determine color: amber for close, red for far
+                                if (diff <= actual * 0.20) { // Within 20% is "close"
+                                    resultColor = "warning.main";
+                                } else { // More than 20% is "far"
+                                    resultColor = "error.main";
                                 }
-                                secondary={
-                                    guesses[idx] !== null
-                                        ? (
-                                            <span style={{ color: "#222", fontWeight: 400 }}>
-                                                Your guess: £{guesses[idx]}
-                                                <br />
-                                                Actual: £{tx.price}
-                                            </span>
-                                        )
-                                        : "Tap to guess"
+
+                                // Determine icon direction based on guess
+                                if ((guess ?? 0) > actual) {
+                                    resultIcon = <ArrowDropUpIcon sx={{ color: resultColor }} />;
+                                } else {
+                                    resultIcon = <ArrowDropDownIcon sx={{ color: resultColor }} />;
                                 }
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Drawer
-                anchor="bottom"
-                open={openIdx !== null}
-                onClose={handleClose}
-                container={container?.current || undefined}
-                PaperProps={{
-                    sx: {
-                        borderTopLeftRadius: 16,
-                        borderTopRightRadius: 16,
-                        p: 2,
-                        width: '100%', // Ensures it doesn't exceed the container
-                        maxWidth: 485, // Match your AppPhoneWrapper's max width if set
-                        mx: 'auto',    // Center horizontally if there's extra space
-                    }
-                }}
-            >
-                {openIdx !== null && (
-                    <Box sx={{
-                        p: 2,
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Stack direction="column" gap={1} sx={{ width: '100%', maxWidth: 320 }}>
-                            <Typography variant="subtitle1" align="center">
-                                Guess for {transactions[openIdx].time}
-                            </Typography>
-                            <TextField
-                                type="number"
-                                label="Your guess (£)"
-                                value={input}
-                                onChange={e => setInput(e.target.value)}
-                                fullWidth
-                                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                onClick={handleGuess}
-                                disabled={input === ""}
-                            >
-                                Submit Guess
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                fullWidth
-                            >
-                                Get a Hint
-                            </Button>
-                        </Stack>
-                    </Box>
-                )}
-            </Drawer>
+                            }
+
+                            resultText = (
+                                <Typography
+                                    variant="caption"
+                                    sx={{ color: resultColor, ml: 0.5, fontWeight: 600 }}
+                                >
+                                    {actual.toLocaleString("en-GB", { style: "currency", currency: "GBP" })}
+                                </Typography>
+                            );
+                        }
+
+                        return (
+                            <TimelineItem key={idx}>
+                                <TimelineSeparator>
+                                    <TimelineDot
+                                        variant={guessed ? "filled" : "outlined"}
+                                        sx={{ bgcolor: guessed ? 'primary.main' : 'transparent', borderColor: 'grey.400' }}
+                                    />
+                                    {idx < transactions.length - 1 && <TimelineConnector sx={{ bgcolor: 'grey.400' }} />}
+                                </TimelineSeparator>
+                                <TimelineContent sx={{ pb: 3 }}>
+                                    <Box>
+                                        <Typography fontFamily="monospace" color="text.secondary" gutterBottom>
+                                            {time}
+                                        </Typography>
+                                        <Accordion
+                                            expanded={expanded === idx}
+                                            onChange={() => handleAccordion(idx)}
+                                            elevation={1}
+                                            sx={{
+                                                bgcolor: 'background.paper',
+                                                borderRadius: 2,
+                                                '&.Mui-expanded': {
+                                                    margin: 0,
+                                                },
+                                                '&:before': {
+                                                    display: 'none',
+                                                }
+                                            }}
+                                        >
+                                            <AccordionSummary
+                                                expandIcon={!guessed && <ExpandMoreIcon />}
+                                                sx={{
+                                                    '& .MuiAccordionSummary-content': {
+                                                        alignItems: 'center',
+                                                    }
+                                                }}
+                                            >
+                                                <Chip
+                                                    label={
+                                                        guessed
+                                                            ? guess?.toLocaleString("en-GB", { style: "currency", currency: "GBP" })
+                                                            : "?"
+                                                    }
+                                                    sx={{
+                                                        width: '100px',
+                                                        fontWeight: 'bold',
+                                                        bgcolor: guessed ? 'grey.200' : 'primary.main',
+                                                        color: guessed ? 'text.primary' : 'primary.contrastText',
+                                                    }}
+                                                />
+                                                {guessed && (
+                                                    <Box display="flex" alignItems="center" ml={2}>
+                                                        {resultIcon}
+                                                        {resultText}
+                                                    </Box>
+                                                )}
+                                            </AccordionSummary>
+                                            <AccordionDetails >
+                                                <Stack direction="column" gap={2}>
+                                                    <TextField
+                                                        type="number"
+                                                        label="Your guess (£)"
+                                                        value={inputs[idx]}
+                                                        onChange={e => handleInput(idx, e.target.value)}
+                                                        fullWidth
+                                                        inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                                                        disabled={guessed}
+                                                    />
+                                                    <Grid container spacing={1}>
+                                                        <Grid size={6}>
+                                                            <Button
+                                                                variant="contained"
+                                                                color="primary"
+                                                                fullWidth
+                                                                onClick={() => handleGuess(idx)}
+                                                                disabled={inputs[idx] === "" || guessed}
+                                                            >
+                                                                Submit
+                                                            </Button>
+                                                        </Grid>
+                                                        <Grid size={6}>
+                                                            <Button
+                                                                variant="outlined"
+                                                                color="primary"
+                                                                fullWidth
+                                                                disabled
+                                                            >
+                                                                Hint
+                                                            </Button>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Stack>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    </Box>
+                                </TimelineContent>
+                            </TimelineItem>
+                        );
+                    })}
+                </Timeline>
+            </Stack>
         </Box>
-    );
-
-    // const handleSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     setGuesses([...guesses, Number(guess)]);
-    //     setGuess("");
-    //     if (step < transactions.length - 1) {
-    //         setStep(step + 1);
-    //     } else {
-    //         setShowResult(true);
-    //     }
-    // };
-
-    // if (transactions.length === 0) return null;
-
-    // return (
-    //     <Box
-    //         sx={{
-    //             maxWidth: 400,
-    //             mx: "auto",
-    //             mt: 4,
-    //             p: 2,
-    //             display: "flex",
-    //             flexDirection: "column",
-    //             alignItems: "center",
-    //         }}
-    //     >
-    //         {!showResult ? (
-    //             <>
-    //                 <Typography variant="h6" sx={{ mb: 2 }}>
-    //                     What do you think you spent at {transactions[step].time}?
-    //                 </Typography>
-    //                 <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-    //                     <TextField
-    //                         type="number"
-    //                         label="Your guess"
-    //                         value={guess}
-    //                         onChange={(e) => setGuess(e.target.value)}
-    //                         fullWidth
-    //                         inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-    //                         sx={{ mb: 2 }}
-    //                     />
-    //                     <Button
-    //                         type="submit"
-    //                         variant="contained"
-    //                         color="primary"
-    //                         fullWidth
-    //                         disabled={guess === ""}
-    //                     >
-    //                         {step < transactions.length - 1 ? "Next" : "See Results"}
-    //                     </Button>
-    //                 </form>
-    //             </>
-    //         ) : (
-    //             <Box sx={{ width: "100%" }}>
-    //                 <Typography variant="h6" sx={{ mb: 2 }}>
-    //                     Results
-    //                 </Typography>
-    //                 {transactions.map((tx, idx) => (
-    //                     <Box
-    //                         key={idx}
-    //                         sx={{
-    //                             display: "flex",
-    //                             justifyContent: "space-between",
-    //                             mb: 1,
-    //                             fontSize: "1.1rem",
-    //                         }}
-    //                     >
-    //                         <span>
-    //                             {tx.time}: You guessed ${guesses[idx] ?? "-"}
-    //                         </span>
-    //                         <span>
-    //                             Actual: ${tx.price}
-    //                         </span>
-    //                     </Box>
-    //                 ))}
-    //             </Box>
-    //         )}
-    //     </Box>
-    // );
+    )
 }
