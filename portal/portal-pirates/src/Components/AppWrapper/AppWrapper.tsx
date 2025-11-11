@@ -10,7 +10,7 @@ export const AppPhoneWrapper = forwardRef<HTMLDivElement, { children: React.Reac
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bgcolor: '#e5e5e5', // subtle background to mimic table/surface
+                bgcolor: '#f2eeeeff', // subtle background to mimic table/surface
             }}
         >
             <Paper
@@ -26,6 +26,7 @@ export const AppPhoneWrapper = forwardRef<HTMLDivElement, { children: React.Reac
                     boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
                     display: 'flex',
                     flexDirection: 'column',
+                    bgcolor: '#d4d4d4ff'
                 }}
                 ref={ref}
             >

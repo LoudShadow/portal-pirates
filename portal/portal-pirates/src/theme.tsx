@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const lloydsPalette = {
   primary: {
     main: '#005A42', // Lloyds green
+    light: '#09d19cff',
     contrastText: '#fff',
   },
   secondary: {
@@ -15,6 +16,7 @@ const lloydsPalette = {
   },
   text: {
     primary: '#1A1A1A', // Lloyds dark text
+    mainContrast: '#a3a3a3ff',
     secondary: '#005A42', // Lloyds green for accents
   },
   success: {
@@ -24,12 +26,13 @@ const lloydsPalette = {
     main: '#E4002B', // Lloyds red
   },
   warning: {
-    main: '#FFB81C', // Lloyds yellow
+    main: '#d59f2bff', // Lloyds yellow
   },
   info: {
     main: '#007A33', // Lloyds teal
   },
 };
+
 
 const lloydsFontFamily = [
   '"GT-Ultra"',
