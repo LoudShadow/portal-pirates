@@ -7,29 +7,19 @@ import { PriceGuesser } from './PriceGuesser';
 
 const transactions = [
   {
-    merchant: "Pret A Manger",
-    price: 3.21,
-    time: "2025-11-10T08:35:00Z",
+    merchant: "Northern Rail",
+    price: 23.00,
+    time: "2025-11-10T07:35:12Z",
   },
   {
     merchant: "Starbucks",
-    price: 9.50,
-    time: "2025-11-10T11:19:00Z",
+    price: 6.70,
+    time: "2025-11-10T08:45:15Z",
   },
   {
     merchant: "Tesco Express",
-    price: 18.00,
-    time: "2025-11-10T12:23:00Z",
-  },
-  {
-    merchant: "Sainsbury's Local",
-    price: 5.75,
-    time: "2025-11-10T15:42:00Z",
-  },
-  {
-    merchant: "Boots",
-    price: 12.99,
-    time: "2025-11-10T18:10:00Z",
+    price: 3.85,
+    time: "2025-11-10T12:23:21Z",
   },
 ]
 
