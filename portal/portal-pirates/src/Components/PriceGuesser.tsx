@@ -74,8 +74,6 @@ export const PriceGuesser = ({ transactions,onFinishGame }: PriceGuesserProps) =
 
                         const hint = useHint(tx.merchant, actual.toString(), tx.time);
 
-                        console.log(hint)
-
                         if (guessed) {
                             const diff = Math.abs(actual - (guess ?? 0));
 
