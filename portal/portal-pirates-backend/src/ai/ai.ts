@@ -50,7 +50,7 @@ export async function generateHint(
     location: location,
   });
 
-  const basePrompt = await readTextFile('../../prompts/hint_prompt.txt');
+  const basePrompt = await readTextFile('./prompts/hint_prompt.txt');
 
   const content = generatePrompt(transactionData);
 

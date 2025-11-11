@@ -16,7 +16,7 @@ app.get("/", async (req, res) => {
   res.status(200).send({health: 'ok'});
 });
 
-app.get("/hint", async (req, res) => {
+app.post("/hint", async (req, res) => {
   const data = req.body;
   const content = await generateHint(
     undefined,
