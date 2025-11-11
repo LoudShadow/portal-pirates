@@ -44,17 +44,18 @@ export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
     };
 
     return (
-        <Box padding={2} mt={5}>
-            <Stack gap={1}>
-                <Typography variant="h4" align="center" color="secondary">
+        <Box padding={3} mt={5} sx={{ bgcolor: 'background.default', borderRadius: 4, maxWidth: 500, margin: 'auto' }}>
+            <Stack gap={2}>
+                <Typography variant="h4" align="center" color="primary" sx={{ fontWeight: 'bold' }}>
                     Guess Your Spend
                 </Typography>
                 <Timeline
                     sx={{
                         [`& .${timelineItemClasses.root}:before`]: {
-                        flex: 0,
-                        padding: 0,
+                            flex: 0,
+                            padding: 0,
                         },
+                        p: 0
                     }}
                 >
                     {transactions.map((tx, idx) => {
@@ -88,11 +89,11 @@ export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
                                     resultIcon = <ArrowDropDownIcon sx={{ color: resultColor }} />;
                                 }
                             }
-        
+
                             resultText = (
                                 <Typography
                                     variant="caption"
-                                    sx={{ color: resultColor, ml: 1, fontWeight: 600 }}
+                                    sx={{ color: resultColor, ml: 0.5, fontWeight: 600 }}
                                 >
                                     {actual.toLocaleString("en-GB", { style: "currency", currency: "GBP" })}
                                 </Typography>
@@ -104,23 +105,37 @@ export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
                                 <TimelineSeparator>
                                     <TimelineDot
                                         variant={guessed ? "filled" : "outlined"}
-                                        color={guessed ? "primary" : "grey"}
+                                        sx={{ bgcolor: guessed ? 'primary.main' : 'transparent', borderColor: 'grey.400' }}
                                     />
-                                    {idx < transactions.length - 1 && <TimelineConnector />}
+                                    {idx < transactions.length - 1 && <TimelineConnector sx={{ bgcolor: 'grey.400' }} />}
                                 </TimelineSeparator>
-                                <TimelineContent>
+                                <TimelineContent sx={{ pb: 3 }}>
                                     <Box>
-                                        <Typography fontFamily="monospace">
+                                        <Typography fontFamily="monospace" color="text.secondary" gutterBottom>
                                             {time}
                                         </Typography>
                                         <Accordion
                                             expanded={expanded === idx}
                                             onChange={() => handleAccordion(idx)}
-                                            elevation={0}
-                                            sx={{ bgcolor: "#a3cec3", borderRadius: 2 }}
+                                            elevation={1}
+                                            sx={{
+                                                bgcolor: 'background.paper',
+                                                borderRadius: 2,
+                                                '&.Mui-expanded': {
+                                                    margin: 0,
+                                                },
+                                                '&:before': {
+                                                    display: 'none',
+                                                }
+                                            }}
                                         >
                                             <AccordionSummary
                                                 expandIcon={!guessed && <ExpandMoreIcon />}
+                                                sx={{
+                                                    '& .MuiAccordionSummary-content': {
+                                                        alignItems: 'center',
+                                                    }
+                                                }}
                                             >
                                                 <Chip
                                                     label={
@@ -128,20 +143,22 @@ export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
                                                             ? guess?.toLocaleString("en-GB", { style: "currency", currency: "GBP" })
                                                             : "?"
                                                     }
-                                                    sx={{ width: '100px' }}
+                                                    sx={{
+                                                        width: '100px',
+                                                        fontWeight: 'bold',
+                                                        bgcolor: guessed ? 'grey.200' : 'primary.main',
+                                                        color: guessed ? 'text.primary' : 'primary.contrastText',
+                                                    }}
                                                 />
                                                 {guessed && (
-                                                    <Button
-                                                        variant="text"
-                                                        disabled={true}
-                                                        endIcon={resultIcon}
-                                                    >
+                                                    <Box display="flex" alignItems="center" ml={2}>
+                                                        {resultIcon}
                                                         {resultText}
-                                                    </Button>
+                                                    </Box>
                                                 )}
                                             </AccordionSummary>
                                             <AccordionDetails >
-                                                <Stack direction="column" gap={1}>
+                                                <Stack direction="column" gap={2}>
                                                     <TextField
                                                         type="number"
                                                         label="Your guess (£)"
@@ -160,13 +177,13 @@ export const PriceGuesser = ({ transactions }: PriceGuesserProps) => {
                                                                 onClick={() => handleGuess(idx)}
                                                                 disabled={inputs[idx] === "" || guessed}
                                                             >
-                                                                Submit Guess
+                                                                Submit
                                                             </Button>
                                                         </Grid>
                                                         <Grid size={6}>
                                                             <Button
                                                                 variant="outlined"
-                                                                color="secondary"
+                                                                color="primary"
                                                                 fullWidth
                                                                 disabled
                                                             >
