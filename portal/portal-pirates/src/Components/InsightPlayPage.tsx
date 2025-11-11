@@ -14,16 +14,19 @@ const challenges = [
     { title: "Use Spending Insights", description: "Engage with our spending insights tool to earn bonus points.", icon: <EmojiEvents/> },
 ];
 
-export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void }) {
+export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, usersPoints: number }) {
     const theme = useTheme();
 
     return (
         <Stack alignItems={'center'} spacing={2} paddingTop={2} paddingBottom={2}>
-            <Stack direction={'row'} alignItems={'center'} spacing={2} width={'90%'}>
-                <IconButton onClick={props.onNavigateBack}>
-                    <ArrowBack />
-                </IconButton>
-                <Typography variant="h6">Insight Play</Typography>
+            <Stack direction={'row'} alignItems={'center'} spacing={2} width={'90%'} justifyContent={'space-between'}>
+                <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                    <IconButton onClick={props.onNavigateBack}>
+                        <ArrowBack />
+                    </IconButton>
+                    <Typography variant="h6">Insight Play</Typography>
+                </Stack>
+                <Typography variant="h6">Your Points: {props.usersPoints}</Typography>
             </Stack>
 
             <Box

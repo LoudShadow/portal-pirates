@@ -2,7 +2,7 @@ import { Box, IconButton, Stack, Typography, useTheme, Select, MenuItem, FormCon
 import { ArrowBack, Savings } from "@mui/icons-material";
 import { useState } from "react";
 
-export function TransferPage(props: { expectedPoints: number; onNavigateBack: () => void }) {
+export function TransferPage(props: { expectedPoints: number; onNavigateBack: () => void; setBonusPoints: (points: number) => void }) {
     const theme = useTheme();
     const [amount, setAmount] = useState(10);
     const [showSlider, setShowSlider] = useState(false);
@@ -87,12 +87,15 @@ export function TransferPage(props: { expectedPoints: number; onNavigateBack: ()
                     />
                 )}
 
-                <Button variant="contained" size="large">
+                <Button variant="contained" size="large" onClick={() => {
+                    props.setBonusPoints(pointsToEarn);
+                    props.onNavigateBack();
+                }}>
                     Transfer & Earn {pointsToEarn} Points
                 </Button>
                 {!showSlider && (
                     <Button variant="text" onClick={() => setShowSlider(true)}>
-                        This is too much for me
+                        Adjust Savings ammount
                     </Button>
                 )}
             </Box>

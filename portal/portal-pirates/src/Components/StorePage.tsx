@@ -16,7 +16,7 @@ const allItems = [
     { name: "LNER", icon: <Train />, points: 800 },
 ];
 
-export function StorePage(props: { onNavigateToResults: () => void }) {
+export function StorePage(props: { onNavigateToResults: () => void, usersPoints: number }) {
     const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredItems, setFilteredItems] = useState(allItems);
@@ -40,7 +40,7 @@ export function StorePage(props: { onNavigateToResults: () => void }) {
                         </IconButton>
                         <Typography variant="h6">Store</Typography>
                     </Stack>
-                    <Typography variant="h6">Your Points: 1234</Typography>
+                    <Typography variant="h6">Your Points: {props.usersPoints}</Typography>
                 </Stack>
             </Stack>
 

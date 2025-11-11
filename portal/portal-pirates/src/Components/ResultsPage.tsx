@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Stack, Typography, useTheme, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import { AccessTime, ArrowBack, StackedLineChart, Storefront, TrackChanges } from "@mui/icons-material";
 import { AnimatedCounter } from "./AnimatedCounter";
@@ -41,19 +41,16 @@ export function SubCard(props: {
     );
 }
 
-export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateToTransfer: () => void }) {
+export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateToTransfer: () => void, playtime: string, bonusPoints: number, usersPoints: number, setUsersPoints: (points: number) => void, onNavigateToInsightPlay: () => void, gameResultScore: number }) {
     const theme = useTheme();
     return <Stack alignItems={'center'} spacing={2} paddingTop={2}>
         <Stack alignItems={'center'} spacing={2}>
             <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                <IconButton>
-                    <ArrowBack/>
-                </IconButton>
                 <Typography variant="h6">Guess Your Spend</Typography>
             </Stack>
             <Typography variant="h4">Nice Work</Typography>
             <Box
-                width={'50%'}
+                width={'35%'}
                 sx={{
                     aspectRatio: '1 / 1',
                 }}
@@ -66,13 +63,13 @@ export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateTo
             padding={1} direction="row" alignContent={'center'} justifyContent={'center'} spacing={1}>
             <SubCard
                 title="Points Earned"
-                content="+150"
+                content={`+${Math.round(props.gameResultScore) + props.bonusPoints}`}
                 icon={<TrackChanges/>}
                 index={0}
             />
             <SubCard
                 title="Time Taken"
-                content="2:15"
+                content={props.playtime}
                 icon={<AccessTime/>}
                 index={1}
             />
@@ -93,7 +90,7 @@ export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateTo
             paddingRight={2}
             width={'80%'}
         >
-            <Typography><AnimatedCounter from={0} to={1563}/> Points</Typography>
+            <Typography><AnimatedCounter from={0} to={props.usersPoints + props.bonusPoints}/> Points</Typography>
         </Box>
 
         <Box 
@@ -127,6 +124,18 @@ export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateTo
             <Storefront/>
             <Typography>Store</Typography>
         </Box>
+
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+                props.setUsersPoints(props.usersPoints + Math.round(props.gameResultScore) + props.bonusPoints);
+                props.onNavigateToInsightPlay();
+            }}
+            sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', width: '90%' }}
+        >
+            Finish
+        </Button>
 
     </Stack>
 }
