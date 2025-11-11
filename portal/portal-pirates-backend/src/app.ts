@@ -3,9 +3,12 @@ import dotenv from "dotenv";
 
 import { generateContent, generateHint } from "./ai/ai.ts";
 
+import cors from "cors";
+
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const PORT = process.env.PORT;
 
