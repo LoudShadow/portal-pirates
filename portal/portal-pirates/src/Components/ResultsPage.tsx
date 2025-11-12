@@ -106,7 +106,7 @@ export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateTo
             sx={{ cursor: 'pointer' }}
         >
             <StackedLineChart/>
-            <Typography>Save To double your points!</Typography>
+            <Typography>Save to double your points!</Typography>
         </Box>
 
         <Box 
