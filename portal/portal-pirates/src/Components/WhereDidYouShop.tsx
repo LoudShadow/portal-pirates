@@ -3,6 +3,12 @@ import { Box, Typography, Button, Paper, Stack, useTheme, IconButton } from '@mu
 import { motion, AnimatePresence } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
 
+import sainsburysLogo from '../assets/logos/Sainsburys_Logo.svg';
+import costaLogo from '../assets/logos/Costa_Coffee_Logo.svg';
+import waitroseLogo from '../assets/logos/Waitrose_Logo.svg';
+import boltLogo from '../assets/logos/Bolt_Logo.svg';
+import ebayLogo from '../assets/logos/EBay_Logo.svg';
+
 interface Transaction {
     merchant: string;
     price: number;
@@ -44,11 +50,11 @@ interface Particle {
 }
 
 const DECOY_DATA = [
-    { name: "Sainsbury's", logo: "https://logo.clearbit.com/sainsburys.co.uk" },
-    { name: "Costa Coffee", logo: "https://logo.clearbit.com/costa.co.uk" },
-    { name: "Waitrose", logo: "https://logo.clearbit.com/waitrose.com" },
-    { name: "Bolt", logo: "https://logo.clearbit.com/bolt.eu" },
-    { name: "eBay", logo: "https://logo.clearbit.com/ebay.com" },
+    { name: "Sainsbury's", logo: sainsburysLogo },
+    { name: "Costa Coffee", logo: costaLogo },
+    { name: "Waitrose", logo: waitroseLogo },
+    { name: "Bolt", logo: boltLogo },
+    { name: "eBay", logo: ebayLogo },
 ];
 
 export const WhereDidYouShop: React.FC<BrandGrabProps> = ({ transactions_weekly, onFinishGame }) => {
