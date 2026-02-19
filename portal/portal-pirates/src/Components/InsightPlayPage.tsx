@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Card, CardActionArea, CardContent, Grid, IconButton, Stack, Typography, useTheme } from "@mui/material";
 import { ArrowBack, SportsEsports, EmojiEvents, Storefront, AccountBalance } from "@mui/icons-material";
 
@@ -14,7 +15,7 @@ const challenges = [
     { title: "Use Spending Insights", description: "Engage with our spending insights tool to earn bonus points.", icon: <EmojiEvents /> },
 ];
 
-export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToWhereDidYouShop: () => void, usersPoints: number }) {
+export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToHigherOrLower: () => void, onNavigateToWhereDidYouShop: () => void, usersPoints: number, userStreak: number }) {
     const theme = useTheme();
 
     return (
@@ -26,7 +27,9 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                     </IconButton>
                     <Typography variant="h6">Insight Play</Typography>
                 </Stack>
-                <Typography variant="h6">Your Points: {props.usersPoints}</Typography>
+                <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', px: 2, py: 0.5, borderRadius: '20px' }}>
+                    <Typography variant="subtitle2" fontWeight="bold">Streak: {props.userStreak} Days 🔥</Typography>
+                </Box>
             </Stack>
 
             <Box
@@ -52,9 +55,10 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                                 backgroundColor: ((theme.palette as any).additional as any)[`brand${6 + index}`],
                                 color: theme.palette.getContrastText(((theme.palette as any).additional as any)[`brand${6 + index}`])
                             }}>
+
                                 <CardActionArea
                                     sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
-                                    onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : (game.title === "Where did you shop?" ? props.onNavigateToWhereDidYouShop : undefined)}
+                                    onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : game.title === "Higher Or Lower" ? props.onNavigateToHigherOrLower : game.title === "Where did you shop?" ? props.onNavigateToWhereDidYouShop : undefined}
                                 >
                                     <CardContent>
                                         <Typography variant="subtitle1" component="div" fontWeight="bold">

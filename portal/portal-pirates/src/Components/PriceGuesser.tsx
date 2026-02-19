@@ -25,7 +25,7 @@ interface PriceGuesserProps {
     onFinishGame: (results: { guessedPrice: number; actualPrice: number }[]) => void;
     gameStartTime: number | null;
     setPlaytime: (time: string) => void;
-    setHintCount: (count: number) => void;
+    setHintCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const PriceGuesser = ({ transactions, onFinishGame, gameStartTime, setPlaytime, setHintCount }: PriceGuesserProps) => {

@@ -4,6 +4,7 @@ import { AppPhoneWrapper } from './Components/AppWrapper/AppWrapper'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { theme } from './theme'
 import { PageController } from './Components/PageController'
+import { AuthProvider } from './Components/AuthContext'
 
 
 function App() {
@@ -12,9 +13,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppPhoneWrapper ref={wrapperRef}>
-        <PageController/>
-      </AppPhoneWrapper>
+      <AuthProvider>
+        <AppPhoneWrapper ref={wrapperRef}>
+          <PageController/>
+        </AppPhoneWrapper>
+      </AuthProvider>
     </ThemeProvider>
   )
 }

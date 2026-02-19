@@ -6,6 +6,10 @@ import { InsightPlayPage } from './InsightPlayPage';
 import { PriceGuesser } from './PriceGuesser';
 import { WhereDidYouShop } from './WhereDidYouShop';
 import { WeeklyStatement } from './WeeklyStatement';
+import { HigherOrLower } from './HigherOrLower';
+import { useAuth } from './AuthContext';
+import { LoginPage } from './LoginPage';
+
 
 const transactions = [
     {
@@ -41,6 +45,7 @@ export interface GameResultItem {
 }
 
 export function PageController() {
+    const { isAuthenticated } = useAuth();
     const [currentPage, setCurrentPage] = useState('insight-play'); // 'results', 'store', 'transfer', or 'insight-play'
     const [gameResultState, setGameResultState] = useState<GameResultItem[]>([]);
     const [playtime, setPlaytime] = useState<string>('');
@@ -48,6 +53,8 @@ export function PageController() {
     const [bonusPoints, setBonusPoints] = useState<number>(0);
     const [usersPoints, setUsersPoints] = useState<number>(1563);
     const [hintCount, setHintCount] = useState<number>(0);
+    const [userStreak] = useState<number>(34);
+    const [higherOrLowerScore, setHigherOrLowerScore] = useState<number>(0);
 
     const gameResultScore = gameResultState.length > 0
         ? (gameResultState.reduce((sum, item) => {
@@ -77,19 +84,20 @@ export function PageController() {
         setGameStartTime(Date.now());
     };
 
-    const navigateToWhereDidYouShop = () => {
-        setCurrentPage('where-did-you-shop');
+    const navigateToHigherOrLower = () => {
+        setCurrentPage('higher-or-lower');
     };
 
-    const navigateToWeeklyStatement = () => {
-        setCurrentPage('weekly-statement');
-    };
+    if (!isAuthenticated) {
+        return <LoginPage />;
+    }
 
     return (
         <>
-            {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToWhereDidYouShop={navigateToWhereDidYouShop} usersPoints={usersPoints} />}
-            {currentPage === 'results' && <ResultsPage onNavigateToStore={navigateToStore} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore} hintCount={hintCount} />}
-            {currentPage === 'store' && <StorePage onNavigateToResults={navigateToResults} usersPoints={usersPoints} />}
+
+            {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToWhereDidYouShop={navigateToWhereDidYouShop} usersPoints={usersPoints} userStreak={userStreak} />}
+            {currentPage === 'results' && <ResultsPage onNavigateToStore={navigateToStore} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} />}
+            {currentPage === 'store' && <StorePage onNavigateToResults={navigateToResults} userStreak={userStreak} />}
             {currentPage === 'transfer' && <TransferPage expectedPoints={gameResultScore} onNavigateBack={navigateToResults} setBonusPoints={setBonusPoints} />}
             {currentPage === 'price-guesser' && <PriceGuesser transactions={transactions} onFinishGame={(results) => {
                 setGameResultState(results);
@@ -99,6 +107,10 @@ export function PageController() {
                 navigateToWeeklyStatement();
             }} />}
             {currentPage === 'weekly-statement' && <WeeklyStatement transactions={transactions_weekly} onBack={navigateToResults} />}
+            {currentPage === 'higher-or-lower' && <HigherOrLower onFinishGame={(score) => {
+                setHigherOrLowerScore(score);
+                navigateToResults();
+            }} />}
         </>
     );
 }
