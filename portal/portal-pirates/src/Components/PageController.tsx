@@ -45,7 +45,7 @@ export interface GameResultItem {
 }
 
 export function PageController() {
-    const { isAuthenticated } = useAuth();
+    // const { isAuthenticated } = useAuth();
     const [currentPage, setCurrentPage] = useState('insight-play'); // 'results', 'store', 'transfer', or 'insight-play'
     const [gameResultState, setGameResultState] = useState<GameResultItem[]>([]);
     const [playtime, setPlaytime] = useState<string>('');
@@ -88,9 +88,17 @@ export function PageController() {
         setCurrentPage('higher-or-lower');
     };
 
-    if (!isAuthenticated) {
-        return <LoginPage />;
-    }
+    const navigateToWhereDidYouShop = () => {
+        setCurrentPage('where-did-you-shop');
+    };
+
+    const navigateToWeeklyStatement = () => {
+        setCurrentPage('weekly-statement');
+    };
+
+    // if (!isAuthenticated) {
+    //     return <LoginPage />;
+    // }
 
     return (
         <>
