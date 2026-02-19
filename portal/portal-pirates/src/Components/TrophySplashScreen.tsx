@@ -1,7 +1,8 @@
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import { Close, MyLocation } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import trophy2 from "../assets/trophies/2.png";
 
 interface TrophySplashScreenProps {
     onClose: () => void;
@@ -112,10 +113,11 @@ export function TrophySplashScreen({ onClose, onShare }: TrophySplashScreenProps
                                 justifyContent: 'center',
                                 boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
                                 border: '8px solid white',
-                                position: 'relative'
+                                position: 'relative',
+                                p: 3
                             }}
                         >
-                            <MyLocation sx={{ fontSize: 130, color: '#004d40' }} />
+                            <img src={trophy2} alt="Challenge guru" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                         </Box>
                     </motion.div>
 

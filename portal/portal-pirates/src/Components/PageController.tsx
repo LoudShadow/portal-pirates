@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ResultsPage } from './ResultsPage';
-import { StorePage } from './StorePage';
 import { TransferPage } from './TransferPage';
 import { InsightPlayPage } from './InsightPlayPage';
 import { PriceGuesser } from './PriceGuesser';
@@ -53,10 +52,6 @@ export function PageController() {
         }, 0) / gameResultState.length)
         : 0;
 
-    const navigateToStore = () => {
-        setCurrentPage('store');
-    };
-
     const navigateToResults = () => {
         setCurrentPage('results');
     };
@@ -86,20 +81,18 @@ export function PageController() {
         <>
 
             {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} usersPoints={usersPoints} userStreak={userStreak} />}
-            {currentPage === 'results' && <ResultsPage onNavigateToStore={() => {
-                setShouldPulseStore(true);
-                navigateToStore();
-            }} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} />}
-            {currentPage === 'store' && <StorePage onNavigateToResults={navigateToResults} userStreak={userStreak} isPulsing={shouldPulseStore} />}
+            {currentPage === 'results' && <ResultsPage onNavigateToStore={() => { }} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} userStreak={userStreak} isPulsing={shouldPulseStore} />}
             {currentPage === 'transfer' && <TransferPage expectedPoints={gameResultScore} onNavigateBack={navigateToResults} setBonusPoints={setBonusPoints} />}
             {currentPage === 'price-guesser' && <PriceGuesser transactions={transactions} onFinishGame={(results) => {
                 setGameResultState(results);
                 setShowSplash(true);
+                setShouldPulseStore(true);
                 navigateToResults();
             }} gameStartTime={gameStartTime} setPlaytime={setPlaytime} setHintCount={setHintCount} />}
             {currentPage === 'higher-or-lower' && <HigherOrLower onFinishGame={(score) => {
                 setHigherOrLowerScore(score);
                 setShowSplash(true);
+                setShouldPulseStore(true);
                 navigateToResults();
             }} />}
 
