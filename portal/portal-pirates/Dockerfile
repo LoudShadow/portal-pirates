@@ -8,8 +8,8 @@ COPY dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 # Default port for Cloud Run
-ENV PORT 8080
-ENV BACKEND_URL https://portal-pirates-backend-4up6bkxvqq-nw.a.run.app
+ENV PORT=8080
+ENV BACKEND_URL=https://portal-pirates-backend-4up6bkxvqq-nw.a.run.app
 EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
