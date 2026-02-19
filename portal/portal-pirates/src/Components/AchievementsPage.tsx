@@ -1,5 +1,5 @@
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Grid, IconButton, LinearProgress, Stack, TextField, Typography, useTheme } from "@mui/material";
-import { ArrowBack, ExpandMore, Lock, Casino, MyLocation, WorkspacePremium, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents } from "@mui/icons-material";
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Grid, IconButton, LinearProgress, Stack, Typography, useTheme } from "@mui/material";
+import { ArrowBack, ExpandMore, Lock, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import trophy1 from "../assets/trophies/1.png";
 import trophy2 from "../assets/trophies/2.png";
@@ -32,8 +32,6 @@ const trophies = [
 
 const currentMonthDays = Array.from({ length: 31 }, (_, i) => i + 1);
 const streakDays = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-const daysToNextTrophy = 5;
-
 
 export function AchievementsPage(props: { onNavigateToResults: () => void, userStreak: number }) {
     const theme = useTheme();
