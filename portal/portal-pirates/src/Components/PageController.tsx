@@ -82,9 +82,9 @@ export function PageController() {
     return (
         <>
 
-            {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} usersPoints={usersPoints} />}
+            {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} usersPoints={usersPoints} userStreak={userStreak} />}
             {currentPage === 'results' && <ResultsPage onNavigateToStore={navigateToStore} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} />}
-            {currentPage === 'store' && <StorePage onNavigateToResults={navigateToResults} usersPoints={usersPoints} />}
+            {currentPage === 'store' && <StorePage onNavigateToResults={navigateToResults} userStreak={userStreak} />}
             {currentPage === 'transfer' && <TransferPage expectedPoints={gameResultScore} onNavigateBack={navigateToResults} setBonusPoints={setBonusPoints} />}
             {currentPage === 'price-guesser' && <PriceGuesser transactions={transactions} onFinishGame={(results) => {
                 setGameResultState(results);
