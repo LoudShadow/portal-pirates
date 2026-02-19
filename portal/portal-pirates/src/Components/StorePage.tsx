@@ -19,7 +19,7 @@ const TROPHY_TIERS = [
     { name: 'Back to back', minStreak: 36, color: '#ffd700', icon: <WorkspacePremium /> },
 ];
 
-export function StorePage(props: { onNavigateToResults: () => void, userStreak: number }) {
+export function StorePage(props: { onNavigateToResults: () => void, userStreak: number, isPulsing?: boolean }) {
     const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -34,7 +34,7 @@ export function StorePage(props: { onNavigateToResults: () => void, userStreak: 
     }));
 
     // Find the highest unlocked tier to expand it by default
-    const defaultExpanded = groupedItems.reduce((prev, curr) =>
+    const defaultExpanded = props.isPulsing ? 'Challenge guru' : groupedItems.reduce((prev, curr) =>
         (curr.unlocked ? curr.name : prev), 'Prize draw fiend');
 
     return (
@@ -78,6 +78,15 @@ export function StorePage(props: { onNavigateToResults: () => void, userStreak: 
             </Stack>
 
             <Box width="90%">
+                <style>
+                    {`
+                        @keyframes pulse {
+                            0% { box-shadow: 0 0 0 0 rgba(27, 94, 32, 0.6); border-color: #1b5e20; }
+                            70% { box-shadow: 0 0 0 15px rgba(27, 94, 32, 0); border-color: #2e7d32; }
+                            100% { box-shadow: 0 0 0 0 rgba(27, 94, 32, 0); border-color: #1b5e20; }
+                        }
+                    `}
+                </style>
                 {groupedItems.map(tier => (
                     <Accordion
                         key={tier.name}
@@ -89,7 +98,8 @@ export function StorePage(props: { onNavigateToResults: () => void, userStreak: 
                             boxShadow: theme.shadows[2],
                             overflow: 'hidden',
                             border: `1px solid ${tier.unlocked ? '#a8f5cc' : theme.palette.divider}`,
-                            opacity: tier.unlocked ? 1 : 0.8
+                            opacity: tier.unlocked ? 1 : 0.8,
+                            animation: (props.isPulsing && tier.name === 'Challenge guru') ? 'pulse 2s 3' : 'none'
                         }}
                     >
                         <AccordionSummary
