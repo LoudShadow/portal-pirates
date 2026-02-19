@@ -10,10 +10,11 @@ const games = [
 ];
 
 const challenges = [
-    { title: "Spend 5 times at Sainsbury's", description: "Earn 5% cashback on your next 5 purchases.", icon: <Storefront/> },
-    { title: "Switch to Lloyds", description: "Get £175 for switching your current account.", icon: <AccountBalance/> },
-    { title: "Use Spending Insights", description: "Engage with our spending insights tool to earn bonus points.", icon: <EmojiEvents/> },
+    { title: "Spend 5 times at Sainsbury's", description: "Earn 5% cashback on your next 5 purchases.", icon: <Storefront /> },
+    { title: "Switch to Lloyds", description: "Get £175 for switching your current account.", icon: <AccountBalance /> },
+    { title: "Use Spending Insights", description: "Engage with our spending insights tool to earn bonus points.", icon: <EmojiEvents /> },
 ];
+
 
 export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToHigherOrLower: () => void, usersPoints: number }) {
     const theme = useTheme();
@@ -27,7 +28,9 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                     </IconButton>
                     <Typography variant="h6">Insight Play</Typography>
                 </Stack>
-                <Typography variant="h6">Your Points: {props.usersPoints}</Typography>
+                <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', px: 2, py: 0.5, borderRadius: '20px' }}>
+                    <Typography variant="subtitle2" fontWeight="bold">Streak: {props.userStreak} Days 🔥</Typography>
+                </Box>
             </Stack>
 
             <Box
@@ -42,7 +45,7 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                 gap={2}
             >
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <SportsEsports sx={{color: theme.palette.primary.main}}/>
+                    <SportsEsports sx={{ color: theme.palette.primary.main }} />
                     <Typography variant="h6">Games</Typography>
                 </Stack>
                 <Grid container spacing={2}>
@@ -53,6 +56,7 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                                 backgroundColor:  ((theme.palette as any).additional as any)[`brand${6 + index}`],
                                 color: theme.palette.getContrastText(((theme.palette as any).additional as any)[`brand${6 + index}`])
                             }}>
+
                                 <CardActionArea 
                                     sx={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}
                                     onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : game.title === "Higher Or Lower" ? props.onNavigateToHigherOrLower : undefined}
@@ -81,7 +85,7 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                 gap={2}
             >
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <EmojiEvents sx={{color: theme.palette.primary.main}}/>
+                    <EmojiEvents sx={{ color: theme.palette.primary.main }} />
                     <Typography variant="h6">Challenges</Typography>
                 </Stack>
                 <Stack spacing={2}>

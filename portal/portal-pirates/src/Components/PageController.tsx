@@ -7,21 +7,21 @@ import { PriceGuesser } from './PriceGuesser';
 import { HigherOrLower } from './HigherOrLower';
 
 const transactions = [
-  {
-    merchant: "Northern Rail",
-    price: 23.00,
-    time: "2025-11-10T07:35:12Z",
-  },
-  {
-    merchant: "Starbucks",
-    price: 6.70,
-    time: "2025-11-10T08:45:15Z",
-  },
-  {
-    merchant: "Tesco Express",
-    price: 3.85,
-    time: "2025-11-10T12:23:21Z",
-  },
+    {
+        merchant: "Northern Rail",
+        price: 23.00,
+        time: "2025-11-10T07:35:12Z",
+    },
+    {
+        merchant: "Starbucks",
+        price: 6.70,
+        time: "2025-11-10T08:45:15Z",
+    },
+    {
+        merchant: "Tesco Express",
+        price: 3.85,
+        time: "2025-11-10T12:23:21Z",
+    },
 ]
 
 export interface GameResultItem {
@@ -37,6 +37,7 @@ export function PageController() {
     const [bonusPoints, setBonusPoints] = useState<number>(0);
     const [usersPoints, setUsersPoints] = useState<number>(1563);
     const [hintCount, setHintCount] = useState<number>(0);
+    const [userStreak] = useState<number>(34);
     const [higherOrLowerScore, setHigherOrLowerScore] = useState<number>(0);
 
     const gameResultScore = gameResultState.length > 0
@@ -73,6 +74,7 @@ export function PageController() {
 
     return (
         <>
+
             {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} usersPoints={usersPoints} />}
             {currentPage === 'results' && <ResultsPage onNavigateToStore={navigateToStore} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} />}
             {currentPage === 'store' && <StorePage onNavigateToResults={navigateToResults} usersPoints={usersPoints} />}
