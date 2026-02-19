@@ -16,7 +16,7 @@ const challenges = [
 ];
 
 
-export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToHigherOrLower: () => void, usersPoints: number }) {
+export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToHigherOrLower: () => void, usersPoints: number, userStreak: number }) {
     const theme = useTheme();
 
     return (
@@ -53,12 +53,12 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                         <Grid size={6} key={index}>
                             <Card sx={{
                                 height: '100%',
-                                backgroundColor:  ((theme.palette as any).additional as any)[`brand${6 + index}`],
+                                backgroundColor: ((theme.palette as any).additional as any)[`brand${6 + index}`],
                                 color: theme.palette.getContrastText(((theme.palette as any).additional as any)[`brand${6 + index}`])
                             }}>
 
-                                <CardActionArea 
-                                    sx={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}
+                                <CardActionArea
+                                    sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
                                     onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : game.title === "Higher Or Lower" ? props.onNavigateToHigherOrLower : undefined}
                                 >
                                     <CardContent>
