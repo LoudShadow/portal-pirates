@@ -50,7 +50,7 @@ export interface GameResultItem {
     actualPrice: number;
 }
 
-export function PageController() {
+export function PageController({ showSplash, setShowSplash }: { showSplash: boolean, setShowSplash: (show: boolean) => void }) {
     const { isAuthenticated } = useAuth();
     const [currentPage, setCurrentPage] = useState('insight-play'); // 'results', 'store', 'transfer', or 'insight-play'
     const [gameResultState, setGameResultState] = useState<GameResultItem[]>([]);
@@ -61,7 +61,6 @@ export function PageController() {
     const [hintCount, setHintCount] = useState<number>(0);
     const [userStreak] = useState<number>(28);
     const [higherOrLowerScore, setHigherOrLowerScore] = useState<number>(0);
-    const [showSplash, setShowSplash] = useState(false);
     const [shouldPulseStore, setShouldPulseStore] = useState(false);
 
     const gameResultScore = gameResultState.length > 0

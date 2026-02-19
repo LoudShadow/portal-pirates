@@ -1,8 +1,8 @@
 import { Box, Paper } from '@mui/material';
 import { forwardRef } from 'react';
 
-export const AppPhoneWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode }>(
-    ({ children }, ref) => (
+export const AppPhoneWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode, disableScroll?: boolean }>(
+    ({ children, disableScroll }, ref) => (
         <Box
             sx={{
                 minHeight: '100vh',
@@ -21,7 +21,7 @@ export const AppPhoneWrapper = forwardRef<HTMLDivElement, { children: React.Reac
                     maxWidth: 400,
                     width: '100%',
                     position: 'relative',
-                    overflow: 'scroll',
+                    overflow: disableScroll ? 'hidden' : 'scroll',
                     borderRadius: 4,
                     boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
                     display: 'flex',
