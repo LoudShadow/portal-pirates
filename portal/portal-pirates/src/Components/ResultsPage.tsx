@@ -1,5 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Grid, IconButton, LinearProgress, Stack, Typography, useTheme } from "@mui/material";
-import { ExpandMore, Lock, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents, Close, AccessTime } from "@mui/icons-material";
+import { ExpandMore, Lock, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents, Close, AccessTime, AdsClick } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import trophy1 from "../assets/trophies/1.png";
 import trophy2 from "../assets/trophies/2.png";
@@ -39,6 +39,7 @@ export function SubCard(props: {
     content: string;
     icon: React.ReactNode;
     index: number;
+    centerContent?: boolean;
 }) {
     const theme = useTheme();
     return (
@@ -47,25 +48,40 @@ export function SubCard(props: {
             animate={{ opacity: 1, rotateY: 0 }}
             whileHover={{ scale: 1.05, rotateY: 10 }}
             transition={{ type: "spring", stiffness: 400, damping: 10, delay: props.index * 0.3 }}
+            style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
         >
             <Box bgcolor={theme.palette.primary.main} sx={{
-                borderTopRightRadius: '8px',
-                borderTopLeftRadius: '8px',
-                padding: '8px',
-                color: theme.palette.primary.contrastText
+                borderTopRightRadius: '12px',
+                borderTopLeftRadius: '12px',
+                padding: '6px 4px',
+                color: theme.palette.primary.contrastText,
+                textAlign: 'center',
+                minHeight: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
             }}>
-                <Typography>{props.title}</Typography>
+                <Typography variant="caption" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.65rem' }}>
+                    {props.title}
+                </Typography>
             </Box>
             <Box sx={{
-                borderBottomLeftRadius: '8px',
-                borderBottomRightRadius: '8px',
+                borderBottomLeftRadius: '12px',
+                borderBottomRightRadius: '12px',
                 border: `2px solid ${theme.palette.primary.main}`,
-                padding: '8px',
+                padding: '10px 4px',
                 display: 'flex',
-                gap: 1
+                gap: 0.5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                bgcolor: 'white',
+                flexGrow: 1,
+                minHeight: '48px'
             }}>
-                {props.icon}
-                <Typography>{props.content}</Typography>
+                {props.icon && <Box sx={{ display: 'flex', color: theme.palette.primary.main, mr: props.centerContent ? 0 : 0.5 }}>{props.icon}</Box>}
+                <Typography variant="h6" sx={{ fontWeight: 900, fontSize: '1rem', lineHeight: 1 }}>
+                    {props.content}
+                </Typography>
             </Box>
         </motion.div>
     );
@@ -126,19 +142,32 @@ export function ResultsPage(props: {
             </Stack>
 
             <Stack
-                width={'100%'}
-                padding={1} direction="row" alignContent={'center'} justifyContent={'center'} spacing={1}>
+                width={'90%'}
+                padding={1}
+                direction="row"
+                alignContent={'stretch'}
+                justifyContent={'center'}
+                spacing={1.5}
+            >
                 <SubCard
-                    title="Time Taken"
+                    title="Time"
                     content={props.playtime}
-                    icon={<AccessTime />}
+                    icon={<AccessTime sx={{ fontSize: '1.1rem' }} />}
                     index={1}
                 />
                 <SubCard
-                    title="Hints Used"
+                    title="Hints"
                     content={props.hintCount.toString()}
-                    icon={<></>}
+                    icon={null}
                     index={2}
+                    centerContent
+                />
+                <SubCard
+                    title="Score"
+                    content={`${Math.round(props.gameResultScore)}%`}
+                    icon={<AdsClick sx={{ fontSize: '1.1rem' }} />}
+                    index={3}
+                    centerContent
                 />
             </Stack>
 
