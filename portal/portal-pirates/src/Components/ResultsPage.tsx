@@ -1,5 +1,5 @@
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Grid, IconButton, LinearProgress, Stack, Typography, useTheme, Button } from "@mui/material";
-import { ArrowBack, ExpandMore, Lock, Casino, MyLocation, WorkspacePremium, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents, Close, AccessTime } from "@mui/icons-material";
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Grid, IconButton, LinearProgress, Stack, Typography, useTheme } from "@mui/material";
+import { ExpandMore, Lock, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents, Close, AccessTime } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import trophy1 from "../assets/trophies/1.png";
 import trophy2 from "../assets/trophies/2.png";
@@ -81,7 +81,8 @@ export function ResultsPage(props: {
     onNavigateToInsightPlay: () => void,
     gameResultScore: number,
     hintCount: number,
-    userStreak: number
+    userStreak: number,
+    isPulsing?: boolean
 }) {
     const theme = useTheme();
 
@@ -91,7 +92,7 @@ export function ResultsPage(props: {
         unlocked: props.userStreak >= tier.minStreak
     }));
 
-    const defaultExpanded = groupedItems.reduce((prev, curr) =>
+    const defaultExpanded = props.isPulsing ? 'Challenge guru' : groupedItems.reduce((prev, curr) =>
         (curr.unlocked ? curr.name : prev), 'Prize draw fiend');
 
     const handleFinish = () => {
@@ -328,6 +329,16 @@ export function ResultsPage(props: {
 
                 <Typography variant="h5" fontWeight="bold" sx={{ mt: 3, mb: 1 }}>Rewards</Typography>
 
+                <style>
+                    {`
+                        @keyframes pulse {
+                            0% { box-shadow: 0 0 0 0 rgba(27, 94, 32, 0.6); border-color: #1b5e20; }
+                            70% { box-shadow: 0 0 0 15px rgba(27, 94, 32, 0); border-color: #2e7d32; }
+                            100% { box-shadow: 0 0 0 0 rgba(27, 94, 32, 0); border-color: #1b5e20; }
+                        }
+                    `}
+                </style>
+
                 {groupedItems.map(tier => (
                     <Accordion
                         key={tier.name}
@@ -339,7 +350,8 @@ export function ResultsPage(props: {
                             boxShadow: theme.shadows[2],
                             overflow: 'hidden',
                             border: `1px solid ${tier.unlocked ? '#a8f5cc' : theme.palette.divider}`,
-                            opacity: tier.unlocked ? 1 : 0.8
+                            opacity: tier.unlocked ? 1 : 0.8,
+                            animation: (props.isPulsing && tier.name === 'Challenge guru') ? 'pulse 2s 3' : 'none'
                         }}
                     >
                         <AccordionSummary
@@ -373,7 +385,7 @@ export function ResultsPage(props: {
                                 <Box flexGrow={1} />
                             </Stack>
                         </AccordionSummary>
-                        <AccordionDetails sx={{ p: 2, bgcolor: theme.palette.background.default }}>
+                        <AccordionDetails sx={{ p: 2, bgcolor: tier.unlocked ? `#a8f5cc40` : theme.palette.action.disabledBackground }}>
                             <Grid container spacing={2}>
                                 {tier.items.map(item => (
                                     <Grid size={6} key={item.name}>

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { ResultsPage } from './ResultsPage';
-import { AchievementsPage } from './AchievementsPage';
 import { TransferPage } from './TransferPage';
 import { InsightPlayPage } from './InsightPlayPage';
 import { PriceGuesser } from './PriceGuesser';
 import { HigherOrLower } from './HigherOrLower';
+import { TrophySplashScreen } from './TrophySplashScreen';
 import { useAuth } from './AuthContext';
 import { LoginPage } from './LoginPage';
 
@@ -40,8 +40,10 @@ export function PageController() {
     const [bonusPoints, setBonusPoints] = useState<number>(0);
     const [usersPoints, setUsersPoints] = useState<number>(1563);
     const [hintCount, setHintCount] = useState<number>(0);
-    const [userStreak] = useState<number>(34);
+    const [userStreak] = useState<number>(28);
     const [higherOrLowerScore, setHigherOrLowerScore] = useState<number>(0);
+    const [showSplash, setShowSplash] = useState(false);
+    const [shouldPulseStore, setShouldPulseStore] = useState(false);
 
     const gameResultScore = gameResultState.length > 0
         ? (gameResultState.reduce((sum, item) => {
@@ -49,10 +51,6 @@ export function PageController() {
             return sum + (100 - percentageDifference);
         }, 0) / gameResultState.length)
         : 0;
-
-    const navigateToStore = () => {
-        setCurrentPage('store');
-    };
 
     const navigateToResults = () => {
         setCurrentPage('results');
@@ -82,17 +80,31 @@ export function PageController() {
     return (
         <>
 
-            {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} usersPoints={usersPoints} />}
-            {currentPage === 'results' && <ResultsPage onNavigateToStore={navigateToStore} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} userStreak={userStreak} />}
+            {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} usersPoints={usersPoints} userStreak={userStreak} />}
+            {currentPage === 'results' && <ResultsPage onNavigateToStore={() => { }} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} userStreak={userStreak} isPulsing={shouldPulseStore} />}
             {currentPage === 'transfer' && <TransferPage expectedPoints={gameResultScore} onNavigateBack={navigateToResults} setBonusPoints={setBonusPoints} />}
             {currentPage === 'price-guesser' && <PriceGuesser transactions={transactions} onFinishGame={(results) => {
                 setGameResultState(results);
+                setShowSplash(true);
+                setShouldPulseStore(true);
                 navigateToResults();
             }} gameStartTime={gameStartTime} setPlaytime={setPlaytime} setHintCount={setHintCount} />}
             {currentPage === 'higher-or-lower' && <HigherOrLower onFinishGame={(score) => {
                 setHigherOrLowerScore(score);
+                setShowSplash(true);
+                setShouldPulseStore(true);
                 navigateToResults();
             }} />}
+
+            {showSplash && (
+                <TrophySplashScreen
+                    onClose={() => setShowSplash(false)}
+                    onShare={() => {
+                        console.log("Sharing trophy...");
+                        setShowSplash(false);
+                    }}
+                />
+            )}
         </>
     );
 }
