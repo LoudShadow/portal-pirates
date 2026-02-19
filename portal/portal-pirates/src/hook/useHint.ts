@@ -1,10 +1,13 @@
 import { useAsync } from 'react-use';
+import { useAuth } from '../Components/AuthContext';
 
 const hintPromiseCache = new Map<string, Promise<string | undefined>>();
 
 const useHint = (merchant?: string, amount?: string, time?: string) => {
+  const { token } = useAuth();
+
   const state = useAsync(async () => {
-    if (!merchant || !amount || !time) {
+    if (!merchant || !amount || !time || !token) {
       return;
     }
 
@@ -14,10 +17,16 @@ const useHint = (merchant?: string, amount?: string, time?: string) => {
       return hintPromiseCache.get(cacheKey);
     }
 
-    const hintPromise = fetch('http://localhost:3001/hint', {
+    const backendUrl = (window as any).BACKEND_URL;
+    const finalBackendUrl = (!backendUrl || backendUrl === "__BACKEND_URL_PLACEHOLDER__") 
+      ? 'http://localhost:3001' 
+      : backendUrl;
+
+    const hintPromise = fetch(`${finalBackendUrl}/hint`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
         merchant,
@@ -36,7 +45,7 @@ const useHint = (merchant?: string, amount?: string, time?: string) => {
     hintPromiseCache.set(cacheKey, hintPromise);
 
     return hintPromise;
-  }, [merchant, amount, time]);
+  }, [merchant, amount, time, token]);
 
   return state;
 };

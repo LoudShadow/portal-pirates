@@ -5,6 +5,8 @@ import { TransferPage } from './TransferPage';
 import { InsightPlayPage } from './InsightPlayPage';
 import { PriceGuesser } from './PriceGuesser';
 import { HigherOrLower } from './HigherOrLower';
+import { useAuth } from './AuthContext';
+import { LoginPage } from './LoginPage';
 
 const transactions = [
     {
@@ -30,6 +32,7 @@ export interface GameResultItem {
 }
 
 export function PageController() {
+    const { isAuthenticated } = useAuth();
     const [currentPage, setCurrentPage] = useState('insight-play'); // 'results', 'store', 'transfer', or 'insight-play'
     const [gameResultState, setGameResultState] = useState<GameResultItem[]>([]);
     const [playtime, setPlaytime] = useState<string>('');
@@ -71,6 +74,10 @@ export function PageController() {
     const navigateToHigherOrLower = () => {
         setCurrentPage('higher-or-lower');
     };
+
+    if (!isAuthenticated) {
+        return <LoginPage />;
+    }
 
     return (
         <>
