@@ -1,7 +1,6 @@
 import { Box, Stack, Typography, useTheme, Button } from "@mui/material";
 import { motion } from "framer-motion";
-import { AccessTime, StackedLineChart, Storefront, TrackChanges } from "@mui/icons-material";
-import { AnimatedCounter } from "./AnimatedCounter";
+import { AccessTime, Storefront } from "@mui/icons-material";
 import imgUrl from '../assets/cancara.png'
 
 export function SubCard(props: {
@@ -62,12 +61,6 @@ export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateTo
             width={'100%'}
             padding={1} direction="row" alignContent={'center'} justifyContent={'center'} spacing={1}>
             <SubCard
-                title="Points Earned"
-                content={`+${Math.round(props.gameResultScore) + props.bonusPoints}`}
-                icon={<TrackChanges/>}
-                index={0}
-            />
-            <SubCard
                 title="Time Taken"
                 content={props.playtime}
                 icon={<AccessTime/>}
@@ -80,34 +73,6 @@ export function ResultsPage(props: { onNavigateToStore: () => void, onNavigateTo
                 index={2}
             />
         </Stack>
-        <Box 
-            borderRadius={'24px'} 
-            bgcolor={theme.palette.primary.light} 
-            borderColor={theme.palette.primary.main}
-            border={1}
-            padding={1} 
-            paddingLeft={2} 
-            paddingRight={2}
-            width={'80%'}
-        >
-            <Typography><AnimatedCounter from={0} to={props.usersPoints + props.bonusPoints}/> Points</Typography>
-        </Box>
-
-        <Box 
-            borderRadius={'24px'} 
-            bgcolor={theme.palette.background.paper} 
-            borderColor={theme.palette.primary.main}
-            border={1}
-            padding={3} 
-            width={'90%'}
-            display={'flex'}
-            gap={2}
-            onClick={props.onNavigateToTransfer}
-            sx={{ cursor: 'pointer' }}
-        >
-            <StackedLineChart/>
-            <Typography>Save to double your points!</Typography>
-        </Box>
 
         <Box 
             borderRadius={'24px'} 
