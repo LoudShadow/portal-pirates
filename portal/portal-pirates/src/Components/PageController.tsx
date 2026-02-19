@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ResultsPage } from './ResultsPage';
-import { StorePage } from './StorePage';
+import { AchievementsPage } from './AchievementsPage';
 import { TransferPage } from './TransferPage';
 import { InsightPlayPage } from './InsightPlayPage';
 import { PriceGuesser } from './PriceGuesser';
@@ -83,8 +83,7 @@ export function PageController() {
         <>
 
             {currentPage === 'insight-play' && <InsightPlayPage onNavigateBack={navigateToResults} onNavigateToPriceGuesser={navigateToPriceGuesser} onNavigateToHigherOrLower={navigateToHigherOrLower} usersPoints={usersPoints} />}
-            {currentPage === 'results' && <ResultsPage onNavigateToStore={navigateToStore} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} />}
-            {currentPage === 'store' && <StorePage onNavigateToResults={navigateToResults} usersPoints={usersPoints} />}
+            {currentPage === 'results' && <ResultsPage onNavigateToStore={navigateToStore} onNavigateToTransfer={navigateToTransfer} playtime={playtime} bonusPoints={bonusPoints} usersPoints={usersPoints} setUsersPoints={setUsersPoints} onNavigateToInsightPlay={navigateToInsightPlay} gameResultScore={gameResultScore || higherOrLowerScore} hintCount={hintCount} userStreak={userStreak} />}
             {currentPage === 'transfer' && <TransferPage expectedPoints={gameResultScore} onNavigateBack={navigateToResults} setBonusPoints={setBonusPoints} />}
             {currentPage === 'price-guesser' && <PriceGuesser transactions={transactions} onFinishGame={(results) => {
                 setGameResultState(results);
