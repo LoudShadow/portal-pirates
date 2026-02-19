@@ -5,7 +5,7 @@ import { ArrowBack, SportsEsports, EmojiEvents, Storefront, AccountBalance } fro
 const games = [
     { title: "Guess your spend" },
     { title: "Higher Or Lower" },
-    { title: "Supermarket Sweep" },
+    { title: "Where did you shop?" },
     { title: "Coming soon..." },
 ];
 
@@ -15,8 +15,7 @@ const challenges = [
     { title: "Use Spending Insights", description: "Engage with our spending insights tool to earn bonus points.", icon: <EmojiEvents /> },
 ];
 
-
-export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToHigherOrLower: () => void, usersPoints: number, userStreak: number }) {
+export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToHigherOrLower: () => void, onNavigateToWhereDidYouShop: () => void, usersPoints: number, userStreak: number }) {
     const theme = useTheme();
 
     return (
@@ -59,7 +58,7 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
 
                                 <CardActionArea
                                     sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
-                                    onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : game.title === "Higher Or Lower" ? props.onNavigateToHigherOrLower : undefined}
+                                    onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : game.title === "Higher Or Lower" ? props.onNavigateToHigherOrLower : game.title === "Where did you shop?" ? props.onNavigateToWhereDidYouShop : undefined}
                                 >
                                     <CardContent>
                                         <Typography variant="subtitle1" component="div" fontWeight="bold">
