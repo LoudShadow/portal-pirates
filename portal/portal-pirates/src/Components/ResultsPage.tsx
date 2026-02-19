@@ -175,7 +175,6 @@ export function ResultsPage(props: {
             <Box width="90%" sx={{ mt: 2 }}>
                 {/* Streaks Accordion */}
                 <Accordion
-                    defaultExpanded
                     sx={{
                         mb: 2,
                         borderRadius: '16px !important',
