@@ -1,11 +1,10 @@
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Grid, IconButton, LinearProgress, Stack, Typography, useTheme } from "@mui/material";
-import { ExpandMore, Lock, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents, Close, AccessTime } from "@mui/icons-material";
+import { ArrowBack, ExpandMore, Lock, Storefront, LocalCafe, ShoppingCart, Train, LocalFireDepartment, EmojiEvents } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import trophy1 from "../assets/trophies/1.png";
 import trophy2 from "../assets/trophies/2.png";
 import trophy3 from "../assets/trophies/3.png";
 import trophy4 from "../assets/trophies/4.png";
-import imgUrl from '../assets/cancara.png';
 
 const allItems = [
     { name: "Car Insurance", icon: <Storefront />, streak: 36, tier: 'Back to back' },
@@ -34,116 +33,42 @@ const trophies = [
 const currentMonthDays = Array.from({ length: 31 }, (_, i) => i + 1);
 const streakDays = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
 
-export function SubCard(props: {
-    title: string;
-    content: string;
-    icon: React.ReactNode;
-    index: number;
-}) {
+export function AchievementsPage(props: { onNavigateToResults: () => void, userStreak: number }) {
     const theme = useTheme();
-    return (
-        <motion.div
-            initial={{ opacity: 0, rotateY: -90 }}
-            animate={{ opacity: 1, rotateY: 0 }}
-            whileHover={{ scale: 1.05, rotateY: 10 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10, delay: props.index * 0.3 }}
-        >
-            <Box bgcolor={theme.palette.primary.main} sx={{
-                borderTopRightRadius: '8px',
-                borderTopLeftRadius: '8px',
-                padding: '8px',
-                color: theme.palette.primary.contrastText
-            }}>
-                <Typography>{props.title}</Typography>
-            </Box>
-            <Box sx={{
-                borderBottomLeftRadius: '8px',
-                borderBottomRightRadius: '8px',
-                border: `2px solid ${theme.palette.primary.main}`,
-                padding: '8px',
-                display: 'flex',
-                gap: 1
-            }}>
-                {props.icon}
-                <Typography>{props.content}</Typography>
-            </Box>
-        </motion.div>
-    );
-}
-
-export function ResultsPage(props: {
-    onNavigateToStore: () => void,
-    onNavigateToTransfer: () => void,
-    playtime: string,
-    bonusPoints: number,
-    usersPoints: number,
-    setUsersPoints: (points: number) => void,
-    onNavigateToInsightPlay: () => void,
-    gameResultScore: number,
-    hintCount: number,
-    userStreak: number,
-    isPulsing?: boolean
-}) {
-    const theme = useTheme();
-
     const groupedItems = TROPHY_TIERS.map(tier => ({
         ...tier,
         items: allItems.filter(item => item.tier === tier.name),
         unlocked: props.userStreak >= tier.minStreak
     }));
 
-    const defaultExpanded = props.isPulsing ? 'Challenge guru' : groupedItems.reduce((prev, curr) =>
+    // Find the highest unlocked tier to expand it by default
+    const defaultExpanded = groupedItems.reduce((prev, curr) =>
         (curr.unlocked ? curr.name : prev), 'Prize draw fiend');
 
-    const handleFinish = () => {
-        props.setUsersPoints(props.usersPoints + Math.round(props.gameResultScore) + props.bonusPoints);
-        props.onNavigateToInsightPlay();
-    };
-
     return (
-        <Stack alignItems={'center'} spacing={2} paddingTop={2} paddingBottom={4} sx={{ position: 'relative' }}>
-            {/* Close Button Top Left */}
-            <IconButton
-                onClick={handleFinish}
-                sx={{ position: 'absolute', top: 16, left: 16 }}
-            >
-                <Close />
-            </IconButton>
-
-            <Stack alignItems={'center'} spacing={2}>
-                <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                    <Typography variant="h6">Guess Your Spend</Typography>
+        <Stack alignItems={'center'} spacing={2} paddingTop={2} paddingBottom={4}>
+            <Stack alignItems={'center'} spacing={2} width="100%">
+                <Stack direction={'row'} alignItems={'center'} spacing={2} width={'90%'} justifyContent={'space-between'}>
+                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                        <IconButton onClick={props.onNavigateToResults}>
+                            <ArrowBack />
+                        </IconButton>
+                        <Typography variant="h6" fontWeight="bold">Achievements</Typography>
+                    </Stack>
+                    <Box sx={{
+                        background: 'linear-gradient(45deg, #005A42 0%, #008563 100%)',
+                        color: 'white',
+                        px: 2,
+                        py: 0.5,
+                        borderRadius: '20px',
+                        boxShadow: '0 4px 10px rgba(0, 90, 66, 0.3)'
+                    }}>
+                        <Typography variant="subtitle2" fontWeight="bold">{props.userStreak} Day Streak 🔥</Typography>
+                    </Box>
                 </Stack>
-                <Typography variant="h4">Nice Work</Typography>
-                <Box
-                    width={'35%'}
-                    sx={{
-                        aspectRatio: '1 / 1',
-                    }}
-                >
-                    <img src={imgUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </Box>
             </Stack>
 
-            <Stack
-                width={'100%'}
-                padding={1} direction="row" alignContent={'center'} justifyContent={'center'} spacing={1}>
-                <SubCard
-                    title="Time Taken"
-                    content={props.playtime}
-                    icon={<AccessTime />}
-                    index={1}
-                />
-                <SubCard
-                    title="Hints Used"
-                    content={props.hintCount.toString()}
-                    icon={<></>}
-                    index={2}
-                />
-            </Stack>
-
-            {/* Achievements Content */}
-            <Box width="90%" sx={{ mt: 2 }}>
+            <Box width="90%">
                 {/* Streaks Accordion */}
                 <Accordion
                     defaultExpanded
@@ -272,7 +197,7 @@ export function ResultsPage(props: {
                 >
                     <AccordionSummary expandIcon={<ExpandMore />}>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                            <EmojiEvents sx={{ color: theme.palette.primary.main }} />
+                            <EmojiEvents sx={{ color: '#006A4D' }} />
                             <Typography variant="subtitle1" fontWeight="bold">Trophies</Typography>
                         </Stack>
                     </AccordionSummary>
@@ -314,7 +239,7 @@ export function ResultsPage(props: {
                                                     borderRadius: 4,
                                                     bgcolor: 'grey.200',
                                                     '& .MuiLinearProgress-bar': {
-                                                        bgcolor: trophy.earned ? theme.palette.primary.main : '#FFB100',
+                                                        bgcolor: trophy.earned ? '#006A4D' : '#FFB100',
                                                         borderRadius: 4,
                                                     }
                                                 }}
@@ -326,19 +251,14 @@ export function ResultsPage(props: {
                         </Grid>
                     </AccordionDetails>
                 </Accordion>
+            </Box>
 
-                <Typography variant="h5" fontWeight="bold" sx={{ mt: 3, mb: 1 }}>Rewards</Typography>
 
-                <style>
-                    {`
-                        @keyframes pulse {
-                            0% { box-shadow: 0 0 0 0 rgba(27, 94, 32, 0.6); border-color: #1b5e20; }
-                            70% { box-shadow: 0 0 0 15px rgba(27, 94, 32, 0); border-color: #2e7d32; }
-                            100% { box-shadow: 0 0 0 0 rgba(27, 94, 32, 0); border-color: #1b5e20; }
-                        }
-                    `}
-                </style>
+            <Stack direction="row" justifyContent="space-between" width="90%" alignItems="center" mt={3} mb={1}>
+                <Typography variant="h5" fontWeight="bold">Rewards</Typography>
+            </Stack>
 
+            <Box width="90%">
                 {groupedItems.map(tier => (
                     <Accordion
                         key={tier.name}
@@ -350,8 +270,7 @@ export function ResultsPage(props: {
                             boxShadow: theme.shadows[2],
                             overflow: 'hidden',
                             border: `1px solid ${tier.unlocked ? '#a8f5cc' : theme.palette.divider}`,
-                            opacity: tier.unlocked ? 1 : 0.8,
-                            animation: (props.isPulsing && tier.name === 'Challenge guru') ? 'pulse 2s 3' : 'none'
+                            opacity: tier.unlocked ? 1 : 0.8
                         }}
                     >
                         <AccordionSummary
@@ -385,7 +304,7 @@ export function ResultsPage(props: {
                                 <Box flexGrow={1} />
                             </Stack>
                         </AccordionSummary>
-                        <AccordionDetails sx={{ p: 2, bgcolor: tier.unlocked ? `#a8f5cc40` : theme.palette.action.disabledBackground }}>
+                        <AccordionDetails sx={{ p: 2, bgcolor: theme.palette.background.default }}>
                             <Grid container spacing={2}>
                                 {tier.items.map(item => (
                                     <Grid size={6} key={item.name}>

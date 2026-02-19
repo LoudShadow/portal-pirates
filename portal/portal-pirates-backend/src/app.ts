@@ -24,7 +24,7 @@ async function createMigrationPool(): Promise<Pool> {
     const connector = new Connector();
     const clientOpts = await connector.getOptions({
       instanceConnectionName: process.env.CLOUD_SQL_INSTANCE!,
-      ipType: IpAddressTypes.PRIVATE,
+      ipType: IpAddressTypes.PUBLIC,
       authType: AuthTypes.IAM,
     });
     return new Pool({
@@ -39,12 +39,12 @@ async function createMigrationPool(): Promise<Pool> {
 
 async function main() {
   // ── Run migrations on startup ──────────────────────────────────────────
-  console.log('Running database migrations...');
-  const pool = await createMigrationPool();
-  const db = drizzle(pool);
-  await migrate(db, { migrationsFolder: path.join(__dirname, '../drizzle') });
-  await pool.end();
-  console.log('Migrations complete.');
+  // console.log('Running database migrations...');
+  // const pool = await createMigrationPool();
+  // const db = drizzle(pool);
+  // await migrate(db, { migrationsFolder: path.join(__dirname, '../drizzle') });
+  // await pool.end();
+  // console.log('Migrations complete.');
 
   // ── Start Express ──────────────────────────────────────────────────────
   const app = express();

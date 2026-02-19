@@ -14,10 +14,13 @@ COPY dist ./dist
 # Copy the prompts directory as it's likely needed at runtime
 COPY prompts ./prompts
 
+# Copy drizzle migrations/meta if needed at runtime
+COPY drizzle ./drizzle
+
 # Expose the port (Cloud Run defaults to 8080)
-ENV PORT 8080
-ENV GOOGLE_CLOUD_PROJECT ll-winners26lon-181
-ENV GOOGLE_CLOUD_LOCATION us-central1
+ENV PORT=8080
+ENV GOOGLE_CLOUD_PROJECT=ll-winners26lon-181
+ENV GOOGLE_CLOUD_LOCATION=us-central1
 
 EXPOSE 8080
 

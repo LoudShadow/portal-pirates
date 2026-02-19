@@ -6,7 +6,7 @@ const games = [
     { title: "Guess your spend" },
     { title: "Higher Or Lower" },
     { title: "Where did you shop?" },
-    { title: "Price is Right" },
+    { title: "Coming soon..." },
 ];
 
 const challenges = [

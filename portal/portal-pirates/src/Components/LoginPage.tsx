@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Paper, Container } from '@mui/material';
 import { useAuth } from './AuthContext';
@@ -32,7 +33,7 @@ export const LoginPage: React.FC = () => {
       } else {
         setError('Invalid username or password');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to connect to the server');
     }
   };

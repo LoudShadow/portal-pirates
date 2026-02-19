@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Accordion, Box, AccordionSummary, Chip, Stack, TextField, Typography, AccordionDetails, Button, Grid } from "@mui/material";
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
