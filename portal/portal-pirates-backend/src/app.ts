@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 
-import { generateContent, generateHint } from "./ai/ai.ts";
+import { generateContent, generateHint } from "./ai/ai";
 
 import cors from "cors";
 
