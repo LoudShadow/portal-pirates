@@ -113,7 +113,7 @@ export const WeeklyStatement: React.FC<WeeklyStatementProps> = ({ transactions, 
                     onClick={onBack}
                     sx={{ borderRadius: 3, py: 1.5, fontWeight: 'bold' }}
                 >
-                    Back to Dashboard
+                    Back to InsightPlay
                 </Button>
             </Box>
         </Box>
