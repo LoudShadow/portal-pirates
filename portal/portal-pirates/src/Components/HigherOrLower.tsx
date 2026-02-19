@@ -5,6 +5,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { HelpModal } from "./HelpModal";
 
 interface DailySpend {
     date: string;
@@ -30,6 +31,7 @@ export const HigherOrLower = ({ onFinishGame }: HigherOrLowerProps) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [guesses, setGuesses] = useState<( 'higher' | 'lower' | null)[]>(Array(dailySpendData.length - 1).fill(null));
     const [results, setResults] = useState<(boolean | null)[]>(Array(dailySpendData.length - 1).fill(null));
+    const [helpModalOpen, setHelpModalOpen] = useState(true);
 
     const handleGuess = (guess: 'higher' | 'lower') => {
         const newGuesses = [...guesses];
@@ -56,6 +58,28 @@ export const HigherOrLower = ({ onFinishGame }: HigherOrLowerProps) => {
 
     return (
         <Box padding={3} mt={5} sx={{ bgcolor: 'background.default', borderRadius: 4, maxWidth: 500, margin: 'auto' }}>
+            <HelpModal 
+                open={helpModalOpen} 
+                onClose={() => setHelpModalOpen(false)}
+                title="How to play Higher or Lower"
+                description={
+                    <>
+                        Welcome to Higher or Lower! The goal of the game is to correctly guess whether your spending on each day was higher or lower than the day before.
+                        <br /><br />
+                        1. You'll see your spending amount for one day on the left.
+                        <br />
+                        2. Decide whether you think you spent more or less the next day.
+                        <br />
+                        3. Click "Higher" or "Lower" to make your guess.
+                        <br />
+                        4. The actual amount will be revealed and you'll see if you were correct.
+                        <br />
+                        5. Continue through all 6 comparisons to complete the game.
+                        <br /><br />
+                        You earn points based on how many you get correct out of 6!
+                    </>
+                }
+            />
             <Stack gap={2} alignItems="center">
                 <Typography variant="h4" align="center" color="primary" sx={{ fontWeight: 'bold' }}>
                     Higher or Lower

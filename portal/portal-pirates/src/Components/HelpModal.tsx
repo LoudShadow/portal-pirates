@@ -4,10 +4,12 @@ import CloseIcon from '@mui/icons-material/Close';
 interface HelpModalProps {
     open: boolean;
     onClose: () => void;
+    title?: string;
+    description?: React.ReactNode;
 }
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -18,7 +20,23 @@ const style = {
     borderRadius: 2,
 };
 
-export const HelpModal = ({ open, onClose }: HelpModalProps) => {
+export const HelpModal = ({ open, onClose, title = "How to play Guess Your Spend", description }: HelpModalProps) => {
+    const defaultDescription = (
+        <>
+            Welcome to Guess Your Spend! The goal of the game is to guess the price of three transaction from your day.
+            <br /><br />
+            1. Look at the time for each transaction.
+            <br />
+            2. Enter your best guess for the price of what you think this transaction was.
+            <br />
+            3. After you guess, you'll see how close you were.
+            <br />
+            4. Once you've guessed all the prices, you can see your final results.
+            <br /><br />
+            Good luck!
+        </>
+    );
+
     return (
         <Modal
             open={open}
@@ -40,20 +58,10 @@ export const HelpModal = ({ open, onClose }: HelpModalProps) => {
                     <CloseIcon />
                 </IconButton>
                 <Typography id="game-help-modal-title" variant="h6" component="h2" gutterBottom>
-                    How to play Guess Your Spend
+                    {title}
                 </Typography>
                 <Typography id="game-help-modal-description" sx={{ mt: 2 }}>
-                    Welcome to Guess Your Spend! The goal of the game is to guess the price of three transaction from your day.
-                    <br /><br />
-                    1. Look at the time for each transaction.
-                    <br />
-                    2. Enter your best guess for the price of what you think this transaction was.
-                    <br />
-                    3. After you guess, you'll see how close you were.
-                    <br />
-                    4. Once you've guessed all the prices, you can see your final results.
-                    <br /><br />
-                    Good luck!
+                    {description || defaultDescription}
                 </Typography>
             </Box>
         </Modal>
