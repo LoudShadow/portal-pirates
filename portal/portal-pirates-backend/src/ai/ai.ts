@@ -15,7 +15,7 @@ export async function generateContent(
   });
 
   const response = await client.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.5-flash-lite',
     contents: 'How does AI work?',
   });
 
@@ -57,7 +57,7 @@ export async function generateHint(
   const fullPrompt = `${basePrompt}\n\nTransaction Data:\n${content}`;
 
   const response = await client.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.5-flash-lite',
     contents: fullPrompt,
   });
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Card, CardActionArea, CardContent, Grid, IconButton, Stack, Typography, useTheme } from "@mui/material";
 import { ArrowBack, SportsEsports, EmojiEvents, Storefront, AccountBalance } from "@mui/icons-material";
 
@@ -14,7 +15,8 @@ const challenges = [
     { title: "Use Spending Insights", description: "Engage with our spending insights tool to earn bonus points.", icon: <EmojiEvents /> },
 ];
 
-export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, userStreak: number }) {
+
+export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateToPriceGuesser: () => void, onNavigateToHigherOrLower: () => void, usersPoints: number }) {
     const theme = useTheme();
 
     return (
@@ -51,12 +53,13 @@ export function InsightPlayPage(props: { onNavigateBack: () => void, onNavigateT
                         <Grid size={6} key={index}>
                             <Card sx={{
                                 height: '100%',
-                                backgroundColor: ((theme.palette as any).additional as any)[`brand${6 + index}`],
+                                backgroundColor:  ((theme.palette as any).additional as any)[`brand${6 + index}`],
                                 color: theme.palette.getContrastText(((theme.palette as any).additional as any)[`brand${6 + index}`])
                             }}>
-                                <CardActionArea
-                                    sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
-                                    onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : undefined}
+
+                                <CardActionArea 
+                                    sx={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}
+                                    onClick={game.title === "Guess your spend" ? props.onNavigateToPriceGuesser : game.title === "Higher Or Lower" ? props.onNavigateToHigherOrLower : undefined}
                                 >
                                     <CardContent>
                                         <Typography variant="subtitle1" component="div" fontWeight="bold">
